@@ -1,6 +1,6 @@
 <?php
 define('SITE_TITLE', 'Earn with SMS');
-define('SITE_URL', 'http://localhost/sms');
+define('SITE_URL', 'http://13.127.136.107/sms');
 define('PROFILE_IMAGE_PATH', '/sms/files/Users/profile_image/');
 define('LONG_DATE', 'l, F j, Y \a\t g:i a');
 define('SHORT_DATE', 'M j, y  g:i A');
@@ -16,7 +16,7 @@ define('SUPPORT_EMAIL', 'support@sms.com');
  */
 
 define('DB_USER', 'root');
-define('DB_PASS', 'gurunanak');
+define('DB_PASS', 'ztech@22');
 define('DB_NAME', 'sms');
 
 
