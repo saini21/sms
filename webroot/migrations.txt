@@ -1,0 +1,33 @@
+Admins
+bin/cake bake migration CreateAdmins name:string email:string password:string forgot_password_token:string  profile_image:string role:string created modified
+
+Users
+bin/cake bake migration CreateUsers first_name:string last_name:string email:string password:string forgot_password_token:string profile_image:string created modified
+
+MessageCategories
+bin/cake bake migration CreateMessageCategories category:string created modified
+
+Messages
+bin/cake bake migration CreateMessages message:string message_category_id:biginteger created modified
+
+Sent Messages
+bin/cake bake migration CreateSentMessages user_id:biginteger message:string mobile:string status:boolean approved:boolean message_group:string created modified
+
+Contacts
+bin/cake bake migration CreateContacts name:string number:string created modified
+
+Subscription Packages
+bin/cake bake migration CreateSubscriptionPackages name:string price:string earn_per_sms:string created modified
+
+Subscriptions
+bin/cake bake migration CreateSubscriptions user_id:biginteger subscription_package_id:biginteger created modified
+
+Payment Proofs
+bin/cake bake migration CreatePaymentProofs name:string proof_image:string created modified
+
+
+Opstions
+bin/cake bake migration CreateOptions option_name:string option_value:string default_value:string created modified
+
+FAQs
+bin/cake bake migration CreatePaymentFaqs question:text answer:text created modified
