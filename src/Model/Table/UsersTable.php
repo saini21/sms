@@ -113,20 +113,16 @@ class UsersTable extends Table {
         $validator
             ->scalar('password')
             ->maxLength('password', 255)
-            ->requirePresence('password', 'create')
-            ->notEmpty('password');
+            ->allowEmpty('password');
         
         $validator
             ->scalar('forgot_password_token')
             ->maxLength('forgot_password_token', 255)
             ->requirePresence('forgot_password_token', 'create')
             ->notEmpty('forgot_password_token');
-        
+    
         $validator
-            ->scalar('profile_image')
-            ->maxLength('profile_image', 255)
-            ->requirePresence('profile_image', 'create')
-            ->notEmpty('profile_image');
+            ->allowEmpty('profile_image');
         
         return $validator;
     }

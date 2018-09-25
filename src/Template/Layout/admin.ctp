@@ -11,6 +11,10 @@
     
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     
+    <script type="text/javascript">
+        var SITE_URL = '<?= SITE_URL ?>';
+    </script>
+    
     <?= $this->Html->css([
         'vendor/bootstrap/bootstrap.min',
         'vendor/icon-awesome/css/font-awesome.min',
@@ -30,7 +34,7 @@
         'vendor/fancybox/jquery.fancybox.min',
         'vendor/hamburgers/hamburgers.min',
         'unify-admin',
-        'custom',
+        'admin_custom',
     ]) ?>
     
     <?= $this->Html->script([
@@ -73,10 +77,10 @@
         'components/hs.bar-chart',
         'helpers/hs.focus-state',
         'components/hs.popup',
+        'jquery.validate.min',
         'admin_custom',
     
     ]) ?>
-    
     
     
     <?= $this->fetch('script') ?>
@@ -92,7 +96,11 @@
             <?= $this->element('Admin/admin_sidebar') ?>
             <?= $this->Flash->render() ?>
             <div class="col g-ml-45 g-ml-0--lg g-pb-65--md">
-                <?= $this->fetch('content') ?>
+                <section class="g-pa-20">
+                    <section class="g-brd-around g-brd-gray-light-v7 g-rounded-4 g-pa-15 g-pa-20--md g-mb-30">
+                        <?= $this->fetch('content') ?>
+                    </section>
+                </section>
                 <?= $this->element('Admin/admin_footer') ?>
             </div>
         </div>
@@ -134,12 +142,15 @@
         $.HSCore.components.HSRangeDatepicker.init('#rangeDatepicker, #rangeDatepicker2, #rangeDatepicker3');
         
         
-        
         // initialization of HSDropdown component
         $.HSCore.components.HSDropdown.init($('[data-dropdown-target]'), {dropdownHideOnScroll: false});
         
         // initialization of custom scrollbar
         $.HSCore.components.HSScrollBar.init($('.js-custom-scroll'));
+        
+        setTimeout(function () {
+            $('.message').fadeOut().remove();
+        }, 4000);
         
     });
 </script>

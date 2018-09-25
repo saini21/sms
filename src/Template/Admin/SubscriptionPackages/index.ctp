@@ -1,60 +1,46 @@
-<div class="g-bg-lightblue-v10-opacity-0_5 g-pa-20">
-    <div class="row">
-        <div class="col-xl-12">
-            <h3>The feature is in progress, please wait few days ...</h3>
-        </div>
-    </div>
-</div>
-<!-- nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Subscription Package'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Subscriptions'), ['controller' => 'Subscriptions', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Subscription'), ['controller' => 'Subscriptions', 'action' => 'add']) ?></li>
+<nav class="large-3 medium-4 columns">
+    <ul class="breadcrumb">
+        <li class="heading g-mr-10"><?= __('Actions') ?></li>
+        <li class="g-mr-10">|</li>
+        <li class="g-mr-10"><?= $this->Html->link(__('New Subscription Package'), ['action' => 'add']) ?></li>
+        <li class="g-mr-10">|</li>
+        <li class="g-mr-10"><?= $this->Html->link(__('List Subscriptions'), ['controller' => 'Subscriptions', 'action' => 'index']) ?></li>
     </ul>
 </nav>
-<div class="subscriptionPackages index large-9 medium-8 columns content">
-    <h3><?= __('Subscription Packages') ?></h3>
-    <table cellpadding="0" cellspacing="0">
+<h3 class="g-font-weight-300 g-font-size-28 g-color-black g-mb-30"><?= __('Subscription Packages') ?></h3>
+<div class="faqs table-responsive g-mb-40">
+    <table cellpadding="0" cellspacing="0" class="table table-bordered table-hover u-table--v3 g-color-black">
         <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('price') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('earn_per_sms') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('status') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
+        <tr>
+            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('name') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('price') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('earn_per_sms') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('status') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('created') ?></th>
+            <th scope="col" class="actions"><?= __('Actions') ?></th>
+        </tr>
         </thead>
         <tbody>
-            <?php foreach ($subscriptionPackages as $subscriptionPackage): ?>
+        <?php foreach ($subscriptionPackages as $subscriptionPackage): ?>
             <tr>
                 <td><?= $this->Number->format($subscriptionPackage->id) ?></td>
                 <td><?= h($subscriptionPackage->name) ?></td>
                 <td><?= h($subscriptionPackage->price) ?></td>
                 <td><?= h($subscriptionPackage->earn_per_sms) ?></td>
-                <td><?= h($subscriptionPackage->status) ?></td>
-                <td><?= h($subscriptionPackage->created) ?></td>
-                <td><?= h($subscriptionPackage->modified) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $subscriptionPackage->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $subscriptionPackage->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $subscriptionPackage->id], ['confirm' => __('Are you sure you want to delete # {0}?', $subscriptionPackage->id)]) ?>
+                <td>
+                    <?= $this->element('Admin/status', [
+                        'id' => $subscriptionPackage->id,
+                        'status' => $subscriptionPackage->status,
+                        'model' => 'SubscriptionPackages'
+                    ]) ?>
                 </td>
+                <td><?= h($subscriptionPackage->created->nice()) ?></td>
+                <?= $this->element('Admin/actions', ['id' => $subscriptionPackage->id]) ?>
             </tr>
-            <?php endforeach; ?>
+        <?php endforeach; ?>
         </tbody>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
-</div -->
+</div>
+<?= $this->element('Admin/pagination') ?>
+

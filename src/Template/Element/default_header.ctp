@@ -20,7 +20,6 @@
                 <!-- End Sidebar Toggler -->
             </div>
             
-            
             <!-- Top User -->
             <div class="col-auto d-flex g-pt-5 g-pt-0--sm g-pl-10 g-pl-20--sm">
                 <div class="g-pos-rel g-px-10--lg">
@@ -31,7 +30,11 @@
                        data-dropdown-animation-in="fadeIn" data-dropdown-animation-out="fadeOut">
                 <span class="g-pos-rel">
         <span class="u-badge-v2--xs u-badge--top-right g-hidden-sm-up g-bg-lightblue-v5 g-mr-5"></span>
-                    <?= $this->Html->image(SITE_URL . $authUser['profile_image'], ['class' => 'g-width-30 g-width-40--md g-height-30 g-height-40--md rounded-circle g-mr-10--sm', 'alt' => __('Profile Image')]) ?>
+                    <?php if (!empty($authUser['profile_image'])) { ?>
+                        <img src="<?= PROFILE_IMAGE_PATH . $authUser['profile_image'] ?>" alt='User'
+                             class='g-width-30 g-width-40--md g-height-30 g-height-40--md rounded-circle g-mr-10--sm'/>
+    
+                    <?php } ?>
                 </span>
                         <span class="g-pos-rel g-top-2">
         <span class="g-hidden-sm-down"><?= $authUser['first_name'] ?> <?= $authUser['last_name'] ?></span>

@@ -58,7 +58,7 @@ class MessagesController extends AppController {
             }
             $this->Flash->error(__('The message could not be saved. Please, try again.'));
         }
-        $messageCategories = $this->Messages->MessageCategories->find('list', ['limit' => 200]);
+        $messageCategories = $this->Messages->MessageCategories->find('list', ['limit' => 200, 'keyField' => 'id', 'valueField' => 'category'])->select();
         $this->set(compact('message', 'messageCategories'));
     }
     
@@ -82,7 +82,7 @@ class MessagesController extends AppController {
             }
             $this->Flash->error(__('The message could not be saved. Please, try again.'));
         }
-        $messageCategories = $this->Messages->MessageCategories->find('list', ['limit' => 200]);
+        $messageCategories = $this->Messages->MessageCategories->find('list', ['limit' => 200, 'keyField' => 'id', 'valueField' => 'category']);
         $this->set(compact('message', 'messageCategories'));
     }
     

@@ -1,85 +1,111 @@
 <?php $this->assign('title', __('Profile')) ?>
-<?php if (true) { ?>
-    <div class="g-bg-lightblue-v10-opacity-0_5 g-pa-20">
-        <div class="row">
-            <div class="col-xl-12">
-                <h3>The feature is in progress, please wait few days ...</h3>
-            </div>
-        </div>
-    </div>
-<?php } else { ?>
-    <section class="content-header">
-        <h1>
-            <?= __('Admin') ?>
-            <small><?= __('Profile') ?></small>
-        </h1>
-    </section>
-    <section class="content">
-        <div class="row">
-            <!-- left column -->
-            <div class="profile-main-section">
-                <div class="col-md-12">
-                    <!-- general form elements -->
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><?= __('Edit Profile') ?></h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <!-- form start -->
-                        <?= $this->Form->create($admin, ['enctype' => 'multipart/form-data']) ?>
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label class="required"><?= __('Name') ?></label>
-                                <?= $this->Form->control('name', ['class' => 'form-control', 'placeholder' => 'Name', 'label' => false, 'required' => false]) ?>
-                            </div>
-                            <div class="form-group">
-                                <label class="required"><?= __('Email') ?></label>
-                                <?= $this->Form->control('email', ['class' => 'form-control', 'placeholder' => 'Email', 'label' => false, 'required' => false, 'type' => 'email']) ?>
-                            </div>
-                            <div class="form-group">
-                                <label><?= __('Password') ?></label>
-                                <?= $this->Form->control('password', ['value' => "", 'class' => 'form-control', 'placeholder' => 'Password', 'label' => false, 'required' => false]) ?>
-                            </div>
-                            <div class="form-group">
-                                <label><?= __('Phone') ?></label>
-                                <?= $this->Form->control('phone', ['class' => 'form-control', 'placeholder' => 'Phone', 'label' => false, 'required' => false]) ?>
-                            </div>
-                            <div class="form-group profile-image">
-                                <label><?= __('Profile Image') ?></label>
-                                <div class="fileinput fileinput-new" data-provides="fileinput">
-                                    <span class="btn btn-default btn-file"><span>Choose file</span><input type="file"
-                                                                                                          name="profile_image"
-                                                                                                          class="form-control"
-                                                                                                          id="profile-image"/></span>
-                                    <span class="fileinput-filename"></span><span
-                                        class="fileinput-new">No file chosen</span>
-                                </div>
-                                <?php if ($admin->profile_image == 'admin-default.png') { ?>
-                                <?php } else { ?>
-                                    <?php if (!empty($admin->profile_image)) { ?>
-                                        <?= $this->Form->button(__('Delete Profile Image'), ['type' => 'button', 'class' => 'btn btn-danger', 'id' => 'profile_delete', 'data-attr' => $admin->id]) ?>
-                                    <?php }
-                                } ?>
-                                <?php if (!empty($admin->profile_image) && !is_array($admin->profile_image)) { ?>
-                                    <?= $this->Html->image(SITE_URL . $admin->profile_image, ['alt' => __('Profile image will display here.'), 'width' => '180']) ?>
-                                <?php } ?>
-                                <p class="help-block"><?= __('Only these files extension are allowed: .png , .jpeg and .jpg') ?></p>
-                            </div>
+<h3 class="g-font-weight-300 g-font-size-28 g-color-black g-mb-28">
+    <?= __('Admin') ?>
+    <small><?= __('Profile') ?></small>
+</h3>
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-1"></div>
+    <div class="col-md-8">
+        <!-- general form elements -->
+        <!-- form start -->
+        <?= $this->Form->create($admin, ['enctype' => 'multipart/form-data', 'id' => 'adminProfileForm']) ?>
+        
+        <div class="form-group g-mb-30">
+            <label><?= __('Profile Image') ?></label>
+            <div class="g-pos-rel">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <?php if (!empty($admin->profile_image)) { ?>
+                            <img src="<?= ADMIN_PROFILE_IMAGE_PATH . $admin->profile_image ?>" alt='Admin'
+                                 width='180'/>
                         
-                        </div>
-                    </div>
-                    <!-- /.box-body -->
+                        <?php } ?>
                     
-                    <div class="box-footer">
-                        <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
                     </div>
-                    <?= $this->Form->end() ?>
+                    <div class="col-lg-9">
+                        
+                        <div class="form-group">
+                            <div class="input-group u-file-attach-v1 g-brd-gray-light-v2">
+                                <input class="form-control form-control-md rounded-0" placeholder="Select Image"
+                                       readonly="" id="selectedFile" type="text">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-md h-100 u-btn-primary rounded-0" type="submit">
+                                        Browse
+                                    </button>
+                                    <input type="file" name="profile_image" class="form-control"
+                                           id="profileImage">
+                                </div>
+                            </div>
+                        </div>
+                        <p class="help-block"><?= __('Only these files extension are allowed: .png , .jpeg and .jpg') ?></p>
+                    </div>
+                
                 </div>
-                <!-- /.box -->
             </div>
-            <!--/.col (left) -->
         </div>
-        <!-- /.row -->
-    </section>
+        
+        <div class="form-group g-mb-30">
+            <label class="g-mb-10"><?= __('Name') ?></label>
+            <div class="g-pos-rel">
+                
+                <?= $this->Form->control('name', ['class' => 'form-control g-brd-gray-light-v3--focus g-py-10', 'placeholder' => 'Name', 'label' => false, 'required' => false]) ?>
+            </div>
+        </div>
+        <div class="form-group g-mb-30">
+            <label class="g-mb-10"><?= __('Email') ?></label>
+            <div class="g-pos-rel">
+                <?= $this->Form->control('email', ['class' => 'form-control g-brd-gray-light-v3--focus g-py-10', 'placeholder' => 'Email', 'label' => false, 'required' => false, 'type' => 'email', 'readonly' => 'readonly']) ?>
+            </div>
+        </div>
+        <div class="form-group g-mb-30">
+            <label class="g-mb-10"><?= __('Password') ?></label>
+            <div class="g-pos-rel">
+                <?= $this->Form->control('password', ['value' => "", 'class' => 'form-control g-brd-gray-light-v3--focus g-py-10', 'placeholder' => 'Password', 'id' => 'Password', 'label' => false, 'required' => false]) ?>
+            </div>
+        </div>
+        <div class="form-group g-mb-30">
+            <label class="g-mb-10"><?= __('Confirm Password') ?></label>
+            <div class="g-pos-rel">
+                <?= $this->Form->control('confirm_password', ['value' => "", 'class' => 'form-control g-brd-gray-light-v3--focus g-py-10', 'placeholder' => 'Confirm Password', 'label' => false, 'required' => false, 'type' => 'password']) ?>
+            </div>
+        </div>
+        
+        <div class="form-group g-mb-30">
+            <div class="input-group-btn">
+                <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
+            </div>
+        </div>
+        <?= $this->Form->end() ?>
+    </div>
+    <!-- /.box -->
+</div>
 
-<?php } ?>
+<script>
+    $(function () {
+        $('#profileImage').change(function () {
+            var file = document.getElementById('profileImage');
+            $('#selectedFile').val(file.files.item(0).name);
+        });
+        
+        $("#adminProfileForm").validate({
+            rules: {
+                name: {
+                    required: true
+                },
+                confirm_password: {
+                    equalTo: "#Password"
+                }
+            },
+            messages: {
+                name: {
+                    required: "Please enter name.",
+                },
+                confirm_password: {
+                    equalTo: "Password does not match"
+                }
+            }
+        });
+    });
+
+</script>

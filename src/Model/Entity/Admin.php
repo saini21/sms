@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\Auth\DefaultPasswordHasher;
 
 /**
  * Admin Entity
@@ -16,9 +18,8 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  */
-class Admin extends Entity
-{
-
+class Admin extends Entity {
+    
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -38,7 +39,7 @@ class Admin extends Entity
         'created' => true,
         'modified' => true
     ];
-
+    
     /**
      * Fields that are excluded from JSON versions of the entity.
      *
@@ -47,4 +48,8 @@ class Admin extends Entity
     protected $_hidden = [
         'password'
     ];
+    
+    protected function _setPassword($password) {
+        return (new DefaultPasswordHasher)->hash($password);
+    }
 }

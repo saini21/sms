@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -11,16 +12,15 @@ use Cake\ORM\Entity;
  * @property string $message
  * @property string $mobile
  * @property bool $status
- * @property bool $approved
+ * @property int $approved
  * @property string $message_group
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  *
  * @property \App\Model\Entity\User $user
  */
-class SentMessage extends Entity
-{
-
+class SentMessage extends Entity {
+    
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

@@ -11,6 +11,11 @@
     
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     
+    <script type="text/javascript">
+        var SITE_URL = '<?= SITE_URL ?>';
+    </script>
+    
+    
     <?= $this->Html->css([
         'vendor/bootstrap/bootstrap.min',
         'vendor/icon-awesome/css/font-awesome.min',
@@ -30,7 +35,7 @@
         'vendor/fancybox/jquery.fancybox.min',
         'vendor/hamburgers/hamburgers.min',
         'unify-admin',
-        'custom',
+        'default_custom',
     ]) ?>
     
     <?= $this->Html->script([
@@ -73,7 +78,8 @@
         'components/hs.bar-chart',
         'helpers/hs.focus-state',
         'components/hs.popup',
-        'admin_custom',
+        'jquery.validate.min',
+        'default_custom',
     
     ]) ?>
     

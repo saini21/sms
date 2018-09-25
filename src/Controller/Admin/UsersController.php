@@ -24,8 +24,22 @@ class UsersController extends AppController {
         $this->set(compact('users'));
     }
     
-    public function activities(){
+    public function activitiesUsers() {
+        $users = $this->paginate($this->Users);
     
+        $this->set(compact('users'));
+    }
+    
+    public function activities($userId = null) {
+        
+        $this->loadModel('SentMessages');
+        $sentMessages = $this->SentMessages->find('all')->where(['SentMessages.user_id'=>$userId])->contain(['Users'=>function($q) {
+            return $q->select(['Users.id', 'Users.first_name', 'Users.last_name', 'Users.email']);
+        }])->hydrate(false);
+        
+        $activities = $this->paginate($sentMessages);
+        
+        $this->set(compact('activities'));
     }
     
     /**
@@ -104,3 +118,4 @@ class UsersController extends AppController {
         return $this->redirect(['action' => 'index']);
     }
 }
+

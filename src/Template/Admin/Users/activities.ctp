@@ -1,67 +1,86 @@
-<div class="g-bg-lightblue-v10-opacity-0_5 g-pa-20">
-    <div class="row">
-        <div class="col-xl-12">
-            <h3>The feature is in progress, please wait few days ...</h3>
-        </div>
-    </div>
-</div>
+<?php
+$aproveStatuses = [
+    'Unaproved',
+    'Aproved',
+    'Rejected',
+];
 
-<!-- nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New User'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Sent Messages'), ['controller' => 'SentMessages', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Sent Message'), ['controller' => 'SentMessages', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Subscriptions'), ['controller' => 'Subscriptions', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Subscription'), ['controller' => 'Subscriptions', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="users index large-9 medium-8 columns content">
-    <h3><?= __('Users') ?></h3>
-    <table cellpadding="0" cellspacing="0">
+$aproveClasses = [
+    'g-bg-lightblue-v4',
+    'g-bg-teal-v2',
+    'g-bg-primary',
+];
+?>
+<h3 class="g-font-weight-300 g-font-size-28 g-color-black g-mb-30"><?= __('Activities') ?></h3>
+<div class="faqs table-responsive g-mb-40">
+    <table cellpadding="0" cellspacing="0" class="table table-bordered table-hover u-table--v3 g-color-black">
         <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('first_name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('last_name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('email') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('password') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('forgot_password_token') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('profile_image') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
+        <tr>
+            <th scope="col"><?= $this->Paginator->sort('user_id', "User") ?></th>
+            <th scope="col"><?= $this->Paginator->sort('message') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('mobile') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('status') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('approve', "Approve Status") ?></th>
+        </tr>
         </thead>
         <tbody>
-            <?php foreach ($users as $user): ?>
+        <?php foreach ($activities as $activity): ?>
             <tr>
-                <td><?= $this->Number->format($user->id) ?></td>
-                <td><?= h($user->first_name) ?></td>
-                <td><?= h($user->last_name) ?></td>
-                <td><?= h($user->email) ?></td>
-                <td><?= h($user->password) ?></td>
-                <td><?= h($user->forgot_password_token) ?></td>
-                <td><?= h($user->profile_image) ?></td>
-                <td><?= h($user->created) ?></td>
-                <td><?= h($user->modified) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $user->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+                <td><?= $activity['user']['first_name'] ?> <?= $activity['user']['last_name'] ?></td>
+                <td><?= h($activity['message']) ?></td>
+                <td><?= h($activity['mobile']) ?></td>
+                <td>
+                    <?= $this->element('Admin/status', [
+                        'id' => $activity['id'],
+                        'status' => $activity['status'],
+                        'model' => 'SentMessages',
+                        'inactiveText' => 'Unread',
+                        'activeText' => 'Read',
+                    ]) ?>
+                </td>
+                <td>
+                    <div class="form-group u-select--v3 g-pos-rel g-brd-gray-light-v7 g-rounded-4 mb-0">
+                        <?= $this->Form->control('approve_' . $activity['id'], ['options' => $aproveStatuses, 'label' => false, "class" => "u-select--v3-select u-sibling w-100 g-font-weight-600 g-color-white form-control approve_status " . $aproveClasses[$activity['approved']], 'default' => $activity['approved'], 'id' => 'approve_' . $activity['id']]); ?>
+                    </div>
                 </td>
             </tr>
-            <?php endforeach; ?>
+        <?php endforeach; ?>
         </tbody>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
-</div -->
+</div>
+<?= $this->element('Admin/pagination') ?>
+
+<script>
+    $(function () {
+        
+        $('.approve_status').on("change", function () {
+            var _this = $(this);
+            var id = (typeof _this.attr('id') != 'undefined') ? _this.attr('id').split('_')[1] : 0;
+            var approved = _this.val();
+            if (id != 0) {
+                $.ajax({
+                    url: SITE_URL + "/admin/sent_messages/approveMessage/",
+                    type: "POST",
+                    data: {id, approved},
+                    dataType: "json",
+                    success: function (response) {
+                        
+                        if (response.code == 200) {
+                            var aproveClasses = {
+                                0: 'g-bg-lightblue-v4',
+                                1: 'g-bg-teal-v2',
+                                2: 'g-bg-primary',
+                            };
+                            _this.removeClass('g-bg-lightblue-v4 g-bg-teal-v2 g-bg-primary')
+                            _this.addClass(aproveClasses[response.data.new_approved]);
+                            
+                            
+                        } else {
+                            $().showFlashMessage("error", response.message);
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>

@@ -16,27 +16,42 @@ class AdminsController extends AppController {
     
     public function initialize() {
         parent::initialize();
-        $this->Auth->allow(['login', 'forgotPassword', 'resetPassword', 'add']);
+        $this->Auth->allow(['login', 'forgotPassword', 'resetPassword', 'add', 'changeStatus']);
     }
     
-    public function login(){
+    /**
+     * Index method
+     *
+     * @return \Cake\Http\Response|void
+     */
+    public function index() {
+        if ($this->Auth->user()) {
+            return $this->redirect($this->Auth->redirectUrl());
+        }
+    }
+    
+    public function login() {
+        //if already logged-in, redirect
+        if ($this->Auth->user()) {
+            return $this->redirect($this->Auth->redirectUrl());
+        }
         if ($this->request->is('post')) {
             $admin = $this->Auth->identify();
             if ($admin) {
                 $this->Auth->setUser($admin);
                 if (isset($this->request->getData()['xx'])) {
-                    $this->Cookie->write('beltway_remembertoken', $this->encryptpass($this->request->data['email'])."^".base64_encode($this->request->data['password']), true);
+                    $this->Cookie->write('beltway_remembertoken', $this->encryptpass($this->request->data['email']) . "^" . base64_encode($this->request->data['password']), true);
                 }
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
                 $this->Flash->error(__('Email or password is incorrect'));
                 $this->redirect('/admin');
             }
-        } elseif(empty($this->data)) {
+        } elseif (empty($this->data)) {
             $rememberToken = $this->Cookie->read('beltway_remembertoken');
             if (!is_null($rememberToken)) {
-                $rememberToken = explode("^",$rememberToken);
-                $data = $this->Admins->find('all', ['conditions' => ['remember_token'=>$rememberToken[0]]], ['fields'=>['email','password']])->first();
+                $rememberToken = explode("^", $rememberToken);
+                $data = $this->Admins->find('all', ['conditions' => ['remember_token' => $rememberToken[0]]], ['fields' => ['email', 'password']])->first();
                 
                 $this->request->data['email'] = $data->email;
                 $this->request->data['password'] = base64_decode($rememberToken[1]);
@@ -52,7 +67,17 @@ class AdminsController extends AppController {
     }
     
     public function dashboard() {
-    
+        $this->loadModel('Users');
+        $this->loadModel('SentMessages');
+        $this->loadModel('Messages');
+        
+        $totalUsers = $this->Users->find('all')->count();
+        $newActivityCount = $this->SentMessages->find('all')->where(['SentMessages.approved'=>0])->count();
+        $totalActivity = $this->SentMessages->find('all')->count();
+        $totalMessages = $this->Messages->find('all')->count();
+        
+        $this->set(compact('totalUsers', 'newActivityCount', 'totalActivity', 'totalMessages'));
+        
     }
     
     public function forgotPassword() {
@@ -102,7 +127,7 @@ class AdminsController extends AppController {
                 if ($this->Admins->save($admin)) {
                     $this->Flash->success(__('Password has been reset.'));
                     return $this->redirect(['controller' => 'admins', 'action' => 'login']);
-                }else{
+                } else {
                     $this->Flash->error(__('Password has not been set.'));
                 }
             } else {
@@ -125,129 +150,52 @@ class AdminsController extends AppController {
         
         if ($this->request->is(['patch', 'post', 'put'])) {
             
-            if(empty($this->request->getData('password'))) {
+            if (empty($this->request->getData('password'))) {
                 unset($this->request->data["password"]);
             }
             $admin = $this->Admins->patchEntity($admin, $this->request->getData());
-            //pr($admin);die;
-            // die("done");
+            if (empty($admin->profile_image)) {
+                $admin->profile_image = "/img/user-default.png";
+            }
+            
+            
             if ($this->Admins->save($admin)) {
                 $this->Flash->success(__('The admin has been saved.'));
                 $this->Auth->setUser($admin);
                 
                 return $this->redirect(['action' => 'profile']);
+            } else {
+                //pr($admin->errors()); die;
             }
             $this->Flash->error(__('The admin could not be saved. Please, try again.'));
         }
         $this->set(compact('admin'));
     }
     
-    public function delete_profile_photo() {
+    public function changeStatus() {
+        
         $this->autoRender = false;
-        if ($this->request->is('ajax') && !empty($this->request->query('id'))) {
-            $adminsTable = TableRegistry::get('Admins');
-            $data = $adminsTable->get($this->request->query('id'));
-            $file_name = $data['profile_image'];
-            $data->profile_image = '';
-            if($adminsTable->save($data)) {
-                $path = WWW_ROOT.'files/Admins/profile_image/'.$file_name;
-                if (file_exists($path))
-                {
-                    chmod($path,777);
-                    unlink($path);
-                    $this->Flash->success(__('Profile photo has been deleted successfully.'));
-                    $this->response->type('text');
-                    $this->response->body(true);
-                    return $this->response;
-                }
-            }
-        }
-    }
-    
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
-    public function index() {
-        $admins = $this->paginate($this->Admins);
-        
-        $this->set(compact('admins'));
-    }
-    
-    /**
-     * View method
-     *
-     * @param string|null $id Admin id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null) {
-        $admin = $this->Admins->get($id, [
-            'contain' => []
-        ]);
-        
-        $this->set('admin', $admin);
-    }
-    
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function add() {
-        $admin = $this->Admins->newEntity();
+        $this->responseCode = CODE_BAD_REQUEST;
         if ($this->request->is('post')) {
-            $admin = $this->Admins->patchEntity($admin, $this->request->getData());
-            if ($this->Admins->save($admin)) {
-                $this->Flash->success(__('The admin has been saved.'));
-                
-                return $this->redirect(['action' => 'index']);
+            $model = $this->request->data['model'];
+            $field = $this->request->data['field'];
+            $id = $this->request->data['id'];
+            
+            $this->loadModel($model);
+            
+            $entity = $this->$model->find('all')->where(['id' => $id])->first();
+            
+            $entity->$field = !$entity->$field;
+            
+            if ($this->$model->save($entity)) {
+                $this->responseCode = SUCCESS_CODE;
+                $this->responseData['new_status'] = $entity->$field;
             }
-            $this->Flash->error(__('The admin could not be saved. Please, try again.'));
         }
-        $this->set(compact('admin'));
-    }
     
-    /**
-     * Edit method
-     *
-     * @param string|null $id Admin id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function edit($id = null) {
-        $admin = $this->Admins->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $admin = $this->Admins->patchEntity($admin, $this->request->getData());
-            if ($this->Admins->save($admin)) {
-                $this->Flash->success(__('The admin has been saved.'));
-                
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The admin could not be saved. Please, try again.'));
-        }
-        $this->set(compact('admin'));
-    }
-    
-    /**
-     * Delete method
-     *
-     * @param string|null $id Admin id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null) {
-        $this->request->allowMethod(['post', 'delete']);
-        $admin = $this->Admins->get($id);
-        if ($this->Admins->delete($admin)) {
-            $this->Flash->success(__('The admin has been deleted.'));
-        } else {
-            $this->Flash->error(__('The admin could not be deleted. Please, try again.'));
-        }
+        echo $this->responseFormat();
         
-        return $this->redirect(['action' => 'index']);
     }
+    
+    
 }

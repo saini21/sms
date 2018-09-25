@@ -31,8 +31,15 @@ class UsersController extends AppController {
     }
     
     public function home() {
-    
         $this->viewBuilder()->setLayout('home');
+        
+        $this->loadModel('SubscriptionPackages');
+        $subscriptionPackages = $this->SubscriptionPackages->find('all')->where(['SubscriptionPackages.status'=>1]);
+        
+        $this->loadModel('PaymentProofs');
+        $paymentProofs = $this->PaymentProofs->find('all')->where(['PaymentProofs.status'=>1]);
+        
+        $this->set(compact('subscriptionPackages', 'paymentProofs'));
     }
     
     public function dashboard() {
@@ -61,7 +68,11 @@ class UsersController extends AppController {
         if ($this->Auth->user()) {
             return $this->redirect($this->Auth->redirectUrl());
         }
+        
+        
+        
         if ($this->request->is('post') || $this->request->query('provider')) {
+            
             $user = $this->Auth->identify();
             if ($user) {
                 if ($this->request->data['remember_me']) {
@@ -124,31 +135,7 @@ class UsersController extends AppController {
         }
     }
     
-    
-    /**
-     * Edit Profile method
-     *
-     * @param string|null $id User id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function editProfile() {
-        
-        $user = $this->Users->get($this->Auth->user('id'));
-        
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->Users->save($user)) {
-                $this->Auth->setUser($user);
-                $this->Flash->success(__('Your profile has been updated.'));
-                
-                return $this->redirect(['action' => 'profile']);
-            }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
-        }
-    }
-    
+
     /**
      * Reset Password  method
      *
@@ -265,10 +252,38 @@ class UsersController extends AppController {
         $user = $this->Users->get($this->Auth->user('id'));
         
         $user['password'] = "";
+    
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            
+            if(empty($this->request->data['password'])){
+                unset($this->request->data['password']);
+            }
+            
+            
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            
+            if(empty($this->request->data['password'])){
+                unset($user['password']);
+            }
+            
+            
+            if ($this->Users->save($user)) {
+                $this->Auth->setUser($user);
+                $this->Flash->success(__('Your profile has been updated.'));
+            
+                return $this->redirect(['action' => 'profile']);
+            }else {
+                //show errors
+            }
+            
+            
+            
+            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+        }
         
-        $this->set(compact('user', 'token', 'id'));
-        $this->set('_serialize', ['user', 'token']);
+        $this->set(compact('user'));
     }
+    
     
     public function changeProfileImage() {
         $this->autoRender = false;

@@ -15,7 +15,7 @@
                         
                         <div class="media-body align-self-center">
                             <div class="d-flex align-items-center g-mb-5">
-                                <span class="g-font-size-24 g-line-height-1 g-color-black">9456</span>
+                                <span class="g-font-size-24 g-line-height-1 g-color-black"><?= $totalUsers ?></span>
                             </div>
                             
                             <h6 class="g-font-size-16 g-font-weight-300 g-color-gray-dark-v6 mb-0">Users</h6>
@@ -40,10 +40,35 @@
                         
                         <div class="media-body align-self-center">
                             <div class="d-flex align-items-center g-mb-5">
-                                <span class="g-font-size-24 g-line-height-1 g-color-black">324</span>
+                                <span class="g-font-size-24 g-line-height-1 g-color-black"><?= $newActivityCount ?></span>
                             </div>
                             
                             <h6 class="g-font-size-16 g-font-weight-300 g-color-gray-dark-v6 mb-0">New Activities</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Panel -->
+        </div>
+    
+        <div class="col-sm-6 col-lg-6 col-xl-3 g-mb-30">
+            <!-- Panel -->
+            <div class="card h-100 g-brd-gray-light-v7 u-card-v1 g-rounded-3">
+                <div class="card-block g-font-weight-300 g-pa-20">
+                    <div class="media">
+                        <div class="d-flex g-mr-15">
+                            <div
+                                class="u-header-dropdown-icon-v1 g-pos-rel g-width-60 g-height-60 g-bg-lightred-v2 g-font-size-18 g-font-size-24--md g-color-white rounded-circle">
+                                <i class="hs-admin-wallet g-absolute-centered"></i>
+                            </div>
+                        </div>
+                    
+                        <div class="media-body align-self-center">
+                            <div class="d-flex align-items-center g-mb-5">
+                                <span class="g-font-size-24 g-line-height-1 g-color-black"><?= $totalActivity ?></span>
+                            </div>
+                        
+                            <h6 class="g-font-size-16 g-font-weight-300 g-color-gray-dark-v6 mb-0">Total Activities</h6>
                         </div>
                     </div>
                 </div>
@@ -65,7 +90,7 @@
                         
                         <div class="media-body align-self-center">
                             <div class="d-flex align-items-center g-mb-5">
-                                <span class="g-font-size-24 g-line-height-1 g-color-black">155</span>
+                                <span class="g-font-size-24 g-line-height-1 g-color-black"><?= $totalMessages ?></span>
                             </div>
                             
                             <h6 class="g-font-size-16 g-font-weight-300 g-color-gray-dark-v6 mb-0">Messages</h6>
@@ -76,35 +101,12 @@
             <!-- End Panel -->
         </div>
         
-        <div class="col-sm-6 col-lg-6 col-xl-3 g-mb-30">
-            <!-- Panel -->
-            <div class="card h-100 g-brd-gray-light-v7 u-card-v1 g-rounded-3">
-                <div class="card-block g-font-weight-300 g-pa-20">
-                    <div class="media">
-                        <div class="d-flex g-mr-15">
-                            <div
-                                class="u-header-dropdown-icon-v1 g-pos-rel g-width-60 g-height-60 g-bg-lightred-v2 g-font-size-18 g-font-size-24--md g-color-white rounded-circle">
-                                <i class="hs-admin-wallet g-absolute-centered"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="media-body align-self-center">
-                            <div class="d-flex align-items-center g-mb-5">
-                                <span class="g-font-size-24 g-line-height-1 g-color-black">$150.00</span>
-                            </div>
-                            
-                            <h6 class="g-font-size-16 g-font-weight-300 g-color-gray-dark-v6 mb-0">Total Earning</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End Panel -->
-        </div>
+        
         
         <!-- Statistic Card -->
         <div class="col-xl-12">
             <!-- Statistic Card -->
-            <div class="card g-brd-gray-light-v7 u-card-v1 g-pa-15 g-pa-25-30--md g-mb-30">
+            <!--div class="card g-brd-gray-light-v7 u-card-v1 g-pa-15 g-pa-25-30--md g-mb-30">
                 <header class="media g-mb-30">
                     <h3 class="d-flex align-self-center text-uppercase g-font-size-12 g-font-size-default--md g-color-black mb-0">
                         Activity statistics</h3>
@@ -152,11 +154,12 @@
                          data-tooltip-description-position="right"
                          data-tooltip-custom-class="u-tooltip--v2 g-font-weight-300 g-font-size-default g-color-gray-dark-v6"
                          data-align-text-axis-x="center" data-fill-opacity=".7"
-                         data-fill-colors='["#e62154","#3dd1e8","#1d75e5"]' data-stroke-color="#e1eaea"
+                             data-fill-colors='["#e62154","#3dd1e8","#1d75e5"]' data-stroke-color="#e1eaea"
                          data-stroke-dash-array="0" data-text-size-x="14px" data-text-color-x="#000000"
                          data-text-offset-top-x="10"
                          data-text-size-y="14px" data-text-color-y="#53585e"
-                         data-points-colors='["#e62154","#3dd1e8","#1d75e5"]' data-series='[
+                         data-points-colors='["#e62154","#3dd1e8","#1d75e5"]'
+                         data-series='[
               [
                 {"meta": "Orders", "value": 300000},
                 {"meta": "Orders", "value": 500000},

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -22,65 +23,61 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class SubscriptionPackagesTable extends Table
-{
-
+class SubscriptionPackagesTable extends Table {
+    
     /**
      * Initialize method
      *
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
-    {
+    public function initialize(array $config) {
         parent::initialize($config);
-
+        
         $this->setTable('subscription_packages');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
-
+        
         $this->addBehavior('Timestamp');
-
+        
         $this->hasMany('Subscriptions', [
             'foreignKey' => 'subscription_package_id'
         ]);
     }
-
+    
     /**
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
-    {
+    public function validationDefault(Validator $validator) {
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-
+        
         $validator
             ->scalar('name')
             ->maxLength('name', 255)
             ->requirePresence('name', 'create')
             ->notEmpty('name');
-
+        
         $validator
             ->scalar('price')
             ->maxLength('price', 255)
             ->requirePresence('price', 'create')
             ->notEmpty('price');
-
+        
         $validator
             ->scalar('earn_per_sms')
             ->maxLength('earn_per_sms', 255)
             ->requirePresence('earn_per_sms', 'create')
             ->notEmpty('earn_per_sms');
-
+        
         $validator
             ->boolean('status')
-            ->requirePresence('status', 'create')
-            ->notEmpty('status');
-
+            ->allowEmpty('status');
+        
         return $validator;
     }
 }

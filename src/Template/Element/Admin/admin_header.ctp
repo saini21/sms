@@ -23,7 +23,8 @@
                            data-dropdown-animation-in="fadeIn" data-dropdown-animation-out="fadeOut">
                 <span class="g-pos-rel">
         <span class="u-badge-v2--xs u-badge--top-right g-hidden-sm-up g-bg-lightblue-v5 g-mr-5"></span>
-                    <?= $this->Html->image(SITE_URL . $authUser['profile_image'], ['class' => 'g-width-30 g-width-40--md g-height-30 g-height-40--md rounded-circle g-mr-10--sm', 'alt' => __('Profile Image')]) ?>
+                    <img src="<?= ADMIN_PROFILE_IMAGE_PATH . $authUser['profile_image'] ?>" alt='Admin'
+                         class="g-width-30 g-width-40--md g-height-30 g-height-40--md rounded-circle g-mr-10--sm"/>
                 </span>
                             <span class="g-pos-rel g-top-2">
         <span class="g-hidden-sm-down"><?= $authUser['name'] ?> </span>

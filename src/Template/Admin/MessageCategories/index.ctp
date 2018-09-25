@@ -1,20 +1,15 @@
-<?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\MessageCategory[]|\Cake\Collection\CollectionInterface $messageCategories
- */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Message Category'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Messages'), ['controller' => 'Messages', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Message'), ['controller' => 'Messages', 'action' => 'add']) ?></li>
+<nav class="large-3 medium-4 columns">
+    <ul class="breadcrumb">
+        <li class="heading g-mr-10"><?= __('Actions') ?></li>
+        <li class="g-mr-10">|</li>
+        <li class="g-mr-10"><?= $this->Html->link(__('New Message Category'), ['action' => 'add']) ?></li>
+        <li class="g-mr-10">|</li>
+        <li class="g-mr-10"><?= $this->Html->link(__('New Message'), ['controller' => 'Messages', 'action' => 'add']) ?></li>
     </ul>
 </nav>
-<div class="messageCategories index large-9 medium-8 columns content">
-    <h3><?= __('Message Categories') ?></h3>
-    <table cellpadding="0" cellspacing="0">
+<h3 class="g-font-weight-300 g-font-size-28 g-color-black g-mb-30"><?= __('Message Categories') ?></h3>
+<div class="faqs table-responsive g-mb-40">
+    <table cellpadding="0" cellspacing="0" class="table table-bordered table-hover u-table--v3 g-color-black">
         <thead>
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
@@ -29,25 +24,12 @@
             <tr>
                 <td><?= $this->Number->format($messageCategory->id) ?></td>
                 <td><?= h($messageCategory->category) ?></td>
-                <td><?= h($messageCategory->created) ?></td>
-                <td><?= h($messageCategory->modified) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $messageCategory->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $messageCategory->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $messageCategory->id], ['confirm' => __('Are you sure you want to delete # {0}?', $messageCategory->id)]) ?>
-                </td>
+                <td><?= h($messageCategory->created->nice()) ?></td>
+                <td><?= h($messageCategory->modified->nice()) ?></td>
+                <?= $this->element('Admin/actions', ['id' => $messageCategory->id, 'showView'=> false, 'showDelete'=> false]) ?>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
 </div>
+<?= $this->element('Admin/pagination') ?>

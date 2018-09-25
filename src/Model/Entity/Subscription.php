@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -16,9 +17,8 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\SubscriptionPackage $subscription_package
  */
-class Subscription extends Entity
-{
-
+class Subscription extends Entity {
+    
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

@@ -103,87 +103,36 @@
         
         
         <div class="row g-mb-70">
-            <div class="col-md-4 g-mb-30">
-                <!-- Article -->
-                <article
-                    class="u-shadow-v21 u-shadow-v21--hover g-bg-white text-center g-overflow-hidden g-rounded-4 g-pos-rel g-z-index-2 g-cursor-pointer g-transition-0_3">
-                    <!-- Article Header -->
-                    <header class="g-bg-primary g-pos-rel g-px-20 g-py-70"><strong
-                            class="d-block g-color-white g-font-size-50 g-line-height-0_7 g-mb-20"> <span
-                                class="g-valign-top g-font-size-default">$</span>500<span
-                                class="g-font-size-default"></span> </strong>
-                        <h3 class="h6 text-uppercase g-color-white-opacity-0_7 g-letter-spacing-3 g-mb-20">Starter</h3>
-                    </header>
-                    <!-- End Article Header -->
-                    
-                    <!-- Article Content -->
-                    <div class="g-px-20 g-py-40">
-                        <ul class="list-unstyled g-mb-40">
-                            <li class="g-mb-20">Package 500</li>
-                            <li class="g-mb-20">Earn 10 paisa / Sms</li>
-                            <li class="g-mb-20">Cost 500 INR</li>
-                            <li class="g-mb-20">Pay By Paytm 7728020359</li>
-                        </ul>
-                        <a class="btn text-uppercase u-btn-primary g-rounded-50 g-font-size-12 g-font-weight-700 g-pa-15-30 g-mb-10"
-                           href="#!">Order Now</a></div>
-                    <!-- End Article Content -->
-                </article>
-                <!-- End Article -->
-            </div>
-            <div class="col-md-4 g-mb-30">
-                <!-- Article -->
-                <article
-                    class="u-shadow-v21 u-shadow-v21--hover g-bg-white text-center g-overflow-hidden g-rounded-4 g-pos-rel g-z-index-2 g-cursor-pointer g-transition-0_3">
-                    <!-- Article Header -->
-                    <header class="g-bg-primary g-pos-rel g-px-20 g-py-70"><strong
-                            class="d-block g-color-white g-font-size-50 g-line-height-0_7 g-mb-20"> <span
-                                class="g-valign-top g-font-size-default">$</span>500<span
-                                class="g-font-size-default"></span> </strong>
-                        <h3 class="h6 text-uppercase g-color-white-opacity-0_7 g-letter-spacing-3 g-mb-20">Starter</h3>
-                    </header>
-                    <!-- End Article Header -->
-                    
-                    <!-- Article Content -->
-                    <div class="g-px-20 g-py-40">
-                        <ul class="list-unstyled g-mb-40">
-                            <li class="g-mb-20">Package 500</li>
-                            <li class="g-mb-20">Earn 10 paisa / Sms</li>
-                            <li class="g-mb-20">Cost 500 INR</li>
-                            <li class="g-mb-20">Pay By Paytm 7728020359</li>
-                        </ul>
-                        <a class="btn text-uppercase u-btn-primary g-rounded-50 g-font-size-12 g-font-weight-700 g-pa-15-30 g-mb-10"
-                           href="#!">Order Now</a></div>
-                    <!-- End Article Content -->
-                </article>
-                <!-- End Article -->
-            </div>
-            <div class="col-md-4 g-mb-30">
-                <!-- Article -->
-                <article
-                    class="u-shadow-v21 u-shadow-v21--hover g-bg-white text-center g-overflow-hidden g-rounded-4 g-pos-rel g-z-index-2 g-cursor-pointer g-transition-0_3">
-                    <!-- Article Header -->
-                    <header class="g-bg-primary g-pos-rel g-px-20 g-py-70"><strong
-                            class="d-block g-color-white g-font-size-50 g-line-height-0_7 g-mb-20"> <span
-                                class="g-valign-top g-font-size-default">$</span>500<span
-                                class="g-font-size-default"></span> </strong>
-                        <h3 class="h6 text-uppercase g-color-white-opacity-0_7 g-letter-spacing-3 g-mb-20">Starter</h3>
-                    </header>
-                    <!-- End Article Header -->
-                    
-                    <!-- Article Content -->
-                    <div class="g-px-20 g-py-40">
-                        <ul class="list-unstyled g-mb-40">
-                            <li class="g-mb-20">Package 500</li>
-                            <li class="g-mb-20">Earn 10 paisa / Sms</li>
-                            <li class="g-mb-20">Cost 500 INR</li>
-                            <li class="g-mb-20">Pay By Paytm 7728020359</li>
-                        </ul>
-                        <a class="btn text-uppercase u-btn-primary g-rounded-50 g-font-size-12 g-font-weight-700 g-pa-15-30 g-mb-10"
-                           href="#!">Order Now</a></div>
-                    <!-- End Article Content -->
-                </article>
-                <!-- End Article -->
-            </div>
+            <?php foreach ($subscriptionPackages as $subscriptionPackage) { ?>
+                <div class="col-md-4 g-mb-30">
+                    <!-- Article -->
+                    <article
+                        class="u-shadow-v21 u-shadow-v21--hover g-bg-white text-center g-overflow-hidden g-rounded-4 g-pos-rel g-z-index-2 g-cursor-pointer g-transition-0_3">
+                        <!-- Article Header -->
+                        <header class="g-bg-primary g-pos-rel g-px-20 g-py-70"><strong
+                                class="d-block g-color-white g-font-size-50 g-line-height-0_7 g-mb-20"> <span
+                                    class="g-valign-top g-font-size-default">INR</span><?= $subscriptionPackage->price ?>
+                                <span
+                                    class="g-font-size-default"></span> </strong>
+                            <h3 class="h6 text-uppercase g-color-white-opacity-0_7 g-letter-spacing-3 g-mb-20"><?= $subscriptionPackage->name ?></h3>
+                        </header>
+                        <!-- End Article Header -->
+                        
+                        <!-- Article Content -->
+                        <div class="g-px-20 g-py-40">
+                            <ul class="list-unstyled g-mb-40">
+                                <li class="g-mb-20">Package <?= $subscriptionPackage->price ?></li>
+                                <li class="g-mb-20">Earn <?= $subscriptionPackage->earn_per_sms ?> paisa / Sms</li>
+                                <li class="g-mb-20">Cost <?= $subscriptionPackage->price ?> INR</li>
+                                <li class="g-mb-20">Pay By Paytm 7728020359</li>
+                            </ul>
+                            <a class="btn text-uppercase u-btn-primary g-rounded-50 g-font-size-12 g-font-weight-700 g-pa-15-30 g-mb-10"
+                               href="#!">Order Now</a></div>
+                        <!-- End Article Content -->
+                    </article>
+                    <!-- End Article -->
+                </div>
+            <?php } ?>
         </div>
     
     
@@ -328,47 +277,13 @@
                  "slidesToShow": 1
                }
              }]'>
-                <div class="js-slide u-block-hover">
-                    <img
-                        class="mx-auto g-width-80 u-block-hover__main--grayscale g-opacity-0_3 g-opacity-1--hover g-cursor-pointer"
-                        data-lazy="img/img1.png" alt="Image description">
-                </div>
-                
-                <div class="js-slide u-block-hover">
-                    <img
-                        class="mx-auto g-width-80 u-block-hover__main--grayscale g-opacity-0_3 g-opacity-1--hover g-cursor-pointer"
-                        data-lazy="img/img2.png" alt="Image description">
-                </div>
-                
-                <div class="js-slide u-block-hover">
-                    <img
-                        class="mx-auto g-width-80 u-block-hover__main--grayscale g-opacity-0_3 g-opacity-1--hover g-cursor-pointer"
-                        data-lazy="img/img3.png" alt="Image description">
-                </div>
-                
-                <div class="js-slide u-block-hover">
-                    <img
-                        class="mx-auto g-width-80 u-block-hover__main--grayscale g-opacity-0_3 g-opacity-1--hover g-cursor-pointer"
-                        data-lazy="img/img4.png" alt="Image description">
-                </div>
-                
-                <div class="js-slide u-block-hover">
-                    <img
-                        class="mx-auto g-width-80 u-block-hover__main--grayscale g-opacity-0_3 g-opacity-1--hover g-cursor-pointer"
-                        data-lazy="img/img5.png" alt="Image description">
-                </div>
-                
-                <div class="js-slide u-block-hover">
-                    <img
-                        class="mx-auto g-width-80 u-block-hover__main--grayscale g-opacity-0_3 g-opacity-1--hover g-cursor-pointer"
-                        data-lazy="img/img7.png" alt="Image description">
-                </div>
-                
-                <div class="js-slide u-block-hover">
-                    <img
-                        class="mx-auto g-width-80 u-block-hover__main--grayscale g-opacity-0_3 g-opacity-1--hover g-cursor-pointer"
-                        data-lazy="img/img8.png" alt="Image description">
-                </div>
+                <?php foreach ($paymentProofs as $paymentProof) { ?>
+                    <div class="js-slide u-block-hover">
+                        <img data-lazy="<?= PAYMENT_PROOF_IMAGE_PATH . $paymentProof->proof_image ?>"
+                             alt="<?= $paymentProof->name ?>"
+                             class="mx-auto g-width-120 g-height-80 u-block-hover__main--grayscale g-opacity-0_5 g-opacity-1--hover g-cursor-pointer" />
+                    </div>
+                <?php } ?>
             </div>
         </div>
     </div>

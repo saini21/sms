@@ -39,6 +39,8 @@ class User extends Entity {
         'password' => true,
         'forgot_password_token' => true,
         'profile_image' => true,
+        'new_activity_count' => true,
+        'total_activity_count' => true,
         'created' => true,
         'modified' => true,
         'sent_messages' => true,
