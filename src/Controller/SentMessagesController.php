@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -10,24 +11,22 @@ use App\Controller\AppController;
  *
  * @method \App\Model\Entity\SentMessage[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class SentMessagesController extends AppController
-{
-
+class SentMessagesController extends AppController {
+    
     /**
      * Index method
      *
      * @return \Cake\Http\Response|void
      */
-    public function index()
-    {
+    public function index() {
         $this->paginate = [
             'contain' => ['Users']
         ];
-        $sentMessages = $this->paginate($this->SentMessages);
-
+        $sentMessages = $this->paginate($this->SentMessages->find()->where(['SentMessages.user_id'=>$this->Auth->user('id')]));
+        
         $this->set(compact('sentMessages'));
     }
-
+    
     /**
      * View method
      *
@@ -35,28 +34,26 @@ class SentMessagesController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
-    {
+    public function view($id = null) {
         $sentMessage = $this->SentMessages->get($id, [
             'contain' => ['Users']
         ]);
-
+        
         $this->set('sentMessage', $sentMessage);
     }
-
+    
     /**
      * Add method
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add()
-    {
+    public function add() {
         $sentMessage = $this->SentMessages->newEntity();
         if ($this->request->is('post')) {
             $sentMessage = $this->SentMessages->patchEntity($sentMessage, $this->request->getData());
             if ($this->SentMessages->save($sentMessage)) {
                 $this->Flash->success(__('The sent message has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The sent message could not be saved. Please, try again.'));
@@ -64,7 +61,7 @@ class SentMessagesController extends AppController
         $users = $this->SentMessages->Users->find('list', ['limit' => 200]);
         $this->set(compact('sentMessage', 'users'));
     }
-
+    
     /**
      * Edit method
      *
@@ -72,8 +69,7 @@ class SentMessagesController extends AppController
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
-    {
+    public function edit($id = null) {
         $sentMessage = $this->SentMessages->get($id, [
             'contain' => []
         ]);
@@ -81,7 +77,7 @@ class SentMessagesController extends AppController
             $sentMessage = $this->SentMessages->patchEntity($sentMessage, $this->request->getData());
             if ($this->SentMessages->save($sentMessage)) {
                 $this->Flash->success(__('The sent message has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The sent message could not be saved. Please, try again.'));
@@ -89,7 +85,7 @@ class SentMessagesController extends AppController
         $users = $this->SentMessages->Users->find('list', ['limit' => 200]);
         $this->set(compact('sentMessage', 'users'));
     }
-
+    
     /**
      * Delete method
      *
@@ -97,8 +93,7 @@ class SentMessagesController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
-    {
+    public function delete($id = null) {
         $this->request->allowMethod(['post', 'delete']);
         $sentMessage = $this->SentMessages->get($id);
         if ($this->SentMessages->delete($sentMessage)) {
@@ -106,7 +101,7 @@ class SentMessagesController extends AppController
         } else {
             $this->Flash->error(__('The sent message could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
 }

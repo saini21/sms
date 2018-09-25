@@ -34,25 +34,27 @@ class UsersController extends AppController {
         $this->viewBuilder()->setLayout('home');
         
         $this->loadModel('SubscriptionPackages');
-        $subscriptionPackages = $this->SubscriptionPackages->find('all')->where(['SubscriptionPackages.status'=>1]);
+        $subscriptionPackages = $this->SubscriptionPackages->find('all')->where(['SubscriptionPackages.status' => 1]);
         
         $this->loadModel('PaymentProofs');
-        $paymentProofs = $this->PaymentProofs->find('all')->where(['PaymentProofs.status'=>1]);
+        $paymentProofs = $this->PaymentProofs->find('all')->where(['PaymentProofs.status' => 1]);
         
         $this->set(compact('subscriptionPackages', 'paymentProofs'));
     }
     
     public function dashboard() {
         
-        //if($this->Auth->user('role') == "Politician"){
-        //  return $this->redirect(['action' => 'politician']);;
-        //} else {
-        //  return $this->redirect(['action' => 'privateCitizen']);
-        //}
-        //Do something
+        $this->loadModel('SentMessages');
+        
+        $totalActivities = $this->SentMessages->find('all')->where(['SentMessages.user_id' => $this->Auth->user('id')])->count();
+        $processedActivities = $this->SentMessages->find('all')->where(['SentMessages.user_id' => $this->Auth->user('id'), 'SentMessages.approved !=' => 0])->count();
+        $pendingActivities = $this->SentMessages->find('all')->where(['SentMessages.user_id' => $this->Auth->user('id'), 'SentMessages.approved' => 0])->count();
+        
+        $totalEarning = 0;
+        
+        
+        $this->set(compact('totalActivities', 'processedActivities', 'pendingActivities', 'totalEarning'));
     }
-    
-    
     
     
     /**
@@ -68,7 +70,6 @@ class UsersController extends AppController {
         if ($this->Auth->user()) {
             return $this->redirect($this->Auth->redirectUrl());
         }
-        
         
         
         if ($this->request->is('post') || $this->request->query('provider')) {
@@ -135,7 +136,7 @@ class UsersController extends AppController {
         }
     }
     
-
+    
     /**
      * Reset Password  method
      *
@@ -252,17 +253,17 @@ class UsersController extends AppController {
         $user = $this->Users->get($this->Auth->user('id'));
         
         $user['password'] = "";
-    
+        
         if ($this->request->is(['patch', 'post', 'put'])) {
             
-            if(empty($this->request->data['password'])){
+            if (empty($this->request->data['password'])) {
                 unset($this->request->data['password']);
             }
             
             
             $user = $this->Users->patchEntity($user, $this->request->getData());
             
-            if(empty($this->request->data['password'])){
+            if (empty($this->request->data['password'])) {
                 unset($user['password']);
             }
             
@@ -270,12 +271,11 @@ class UsersController extends AppController {
             if ($this->Users->save($user)) {
                 $this->Auth->setUser($user);
                 $this->Flash->success(__('Your profile has been updated.'));
-            
+                
                 return $this->redirect(['action' => 'profile']);
-            }else {
+            } else {
                 //show errors
             }
-            
             
             
             $this->Flash->error(__('The user could not be saved. Please, try again.'));

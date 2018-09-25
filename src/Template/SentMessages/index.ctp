@@ -1,63 +1,55 @@
 <?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\SentMessage[]|\Cake\Collection\CollectionInterface $sentMessages
- */
+$approved = [
+  'Unseen',
+  'Approved',
+  'Rejected'
+];
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Sent Message'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
+<nav class="large-3 medium-4 columns">
+    <ul class="breadcrumb">
+        <li class="heading g-mr-10"><?= __('Actions') ?></li>
+        <li class="g-mr-10">|</li>
+        <li class="g-mr-10"><?= $this->Html->link(__('Send Message'), ['action' => 'add']) ?></li>
     </ul>
 </nav>
-<div class="sentMessages index large-9 medium-8 columns content">
-    <h3><?= __('Sent Messages') ?></h3>
-    <table cellpadding="0" cellspacing="0">
+<h3 class="g-font-weight-300 g-font-size-28 g-color-black g-mb-30"><?= __('Send SMS to Earn') ?></h3>
+<div class="faqs table-responsive g-mb-40">
+    <table cellpadding="0" cellspacing="0" class="table table-bordered table-hover u-table--v3 g-color-black">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('message') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('mobile') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('status') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('approved') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('message_group') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('created', 'Send At') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($sentMessages as $sentMessage): ?>
             <tr>
-                <td><?= $this->Number->format($sentMessage->id) ?></td>
-                <td><?= $sentMessage->has('user') ? $this->Html->link($sentMessage->user->id, ['controller' => 'Users', 'action' => 'view', $sentMessage->user->id]) : '' ?></td>
                 <td><?= h($sentMessage->message) ?></td>
                 <td><?= h($sentMessage->mobile) ?></td>
-                <td><?= h($sentMessage->status) ?></td>
-                <td><?= h($sentMessage->approved) ?></td>
-                <td><?= h($sentMessage->message_group) ?></td>
-                <td><?= h($sentMessage->created) ?></td>
-                <td><?= h($sentMessage->modified) ?></td>
+                <td><?= ($sentMessage->status) ? "Read" : "Unread" ?></td>
+                <td><?= $approved[$sentMessage->approved] ?></td>
+                <td><?= h($sentMessage->created->nice()) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $sentMessage->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $sentMessage->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $sentMessage->id], ['confirm' => __('Are you sure you want to delete # {0}?', $sentMessage->id)]) ?>
+                    <?= $this->Form->postLink('<i class=\'hs-admin-close\'></i> Delete', ['action' => 'delete', $sentMessage->id], ['confirm' => __('Are you sure you want to delete this activity?'), 'class'=>'btn btn-danger btn-sm', 'escape' => false]) ?>
+                    
                 </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
+    
+</div>
+<div class="paginator">
+    <ul class="pagination">
+        <?= $this->Paginator->first('<< ' . __('first')) ?>
+        <?= $this->Paginator->prev('< ' . __('previous')) ?>
+        <?= $this->Paginator->numbers() ?>
+        <?= $this->Paginator->next(__('next') . ' >') ?>
+        <?= $this->Paginator->last(__('last') . ' >>') ?>
+    </ul>
+    <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
 </div>

@@ -15,16 +15,16 @@
         <!-- End Dashboards -->
         
         <li class="u-sidebar-navigation-v1-menu-item u-side-nav--has-sub-menu u-side-nav--top-level-menu-item u-side-nav-opened has-active">
-            <a class="media u-side-nav--top-level-menu-link u-side-nav--hide-on-hidden g-px-15 g-py-12" href="<?= $this->Url->build(['controller' => 'Messages', 'action' => 'assignedMessages']); ?>">
+            <a class="media u-side-nav--top-level-menu-link u-side-nav--hide-on-hidden g-px-15 g-py-12" href="<?= $this->Url->build(['controller' => 'SentMessages', 'action' => 'add']); ?>">
               <span class="d-flex align-self-center g-pos-rel g-font-size-18 g-mr-18">
                 <i class="hs-admin-comment"></i>
                 </span>
-                <span class="media-body align-self-center">Assigned Messages</span>
+                <span class="media-body align-self-center">Send Messages</span>
             </a>
         </li>
     
         <li class="u-sidebar-navigation-v1-menu-item u-side-nav--has-sub-menu u-side-nav--top-level-menu-item u-side-nav-opened has-active">
-            <a class="media u-side-nav--top-level-menu-link u-side-nav--hide-on-hidden g-px-15 g-py-12" href="<?= $this->Url->build(['controller' => 'Messages', 'action' => 'activities']); ?>">
+            <a class="media u-side-nav--top-level-menu-link u-side-nav--hide-on-hidden g-px-15 g-py-12" href="<?= $this->Url->build(['controller' => 'SentMessages', 'action' => 'index']); ?>">
               <span class="d-flex align-self-center g-pos-rel g-font-size-18 g-mr-18">
                 <i class="hs-admin-check-box"></i>
                 </span>

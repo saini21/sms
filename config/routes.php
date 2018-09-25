@@ -60,6 +60,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     
     
     $routes->connect('/', ['controller' => 'Users', 'action' => 'home']);
+    $routes->connect('/send-message', ['controller' => 'SendMessages', 'action' => 'add']);
+    $routes->connect('/my-activities', ['controller' => 'SendMessages', 'action' => 'index']);
     $routes->connect('/privacy-policy', ['controller' => 'Pages', 'action' => 'privacyPolicy']);
     $routes->connect('/terms-and-conditions', ['controller' => 'Pages', 'action' => 'termsAndConditions']);
     $routes->connect('/how-to-work', ['controller' => 'Pages', 'action' => 'howToWork']);
