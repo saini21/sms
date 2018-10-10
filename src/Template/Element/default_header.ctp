@@ -23,6 +23,11 @@
             <!-- Top User -->
             <div class="col-auto d-flex g-pt-5 g-pt-0--sm g-pl-10 g-pl-20--sm">
                 <div class="g-pos-rel g-px-10--lg">
+                    <a class="d-block" href="<?= $this->Url->build(['controller' => 'SentMessages', 'action' => 'add']); ?>">
+                        <button class="btn btn-success g-mt-5--xl">Send Message</button>
+                    </a>
+                </div>
+                <div class="g-pos-rel g-px-10--lg">
                     <a id="profileMenuInvoker" class="d-block" href="#!" aria-controls="profileMenu"
                        aria-haspopup="true" aria-expanded="false" data-dropdown-event="click"
                        data-dropdown-target="#profileMenu" data-dropdown-type="css-animation"
@@ -47,7 +52,8 @@
                         class="g-pos-abs g-left-0 g-width-100x--lg g-nowrap g-font-size-14 g-py-20 g-mt-17 rounded"
                         aria-labelledby="profileMenuInvoker">
                         <li class="g-mb-10">
-                            <a class="media g-color-lightred-v2--hover g-py-5 g-px-20" href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'profile']); ?>">
+                            <a class="media g-color-lightred-v2--hover g-py-5 g-px-20"
+                               href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'profile']); ?>">
                     <span class="d-flex align-self-center g-mr-12">
           <i class="hs-admin-user"></i>
         </span>
@@ -55,7 +61,8 @@
                             </a>
                         </li>
                         <li class="mb-0">
-                            <a class="media g-color-lightred-v2--hover g-py-5 g-px-20" href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']); ?>">
+                            <a class="media g-color-lightred-v2--hover g-py-5 g-px-20"
+                               href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']); ?>">
                     <span class="d-flex align-self-center g-mr-12">
           <i class="hs-admin-shift-right"></i>
         </span>

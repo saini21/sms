@@ -1,4 +1,14 @@
 <!-- Login -->
+<style>
+    .message {
+        text-align: center !important;
+        width: 100% !important;
+        position: relative;
+        margin: 0;
+        color: #000000;
+        
+    }
+</style>
 <section class="g-bg-gray-light-v5">
     <div class="container g-py-100">
         <div class="row justify-content-center">
@@ -6,6 +16,7 @@
                 <div class="u-shadow-v21 g-bg-white rounded g-py-40 g-px-30">
                     <header class="text-center mb-4">
                         <h2 class="h2 g-color-black g-font-weight-600">Login</h2>
+                        <?= $this->Flash->render() ?>
                     </header>
                     
                     <!-- Form -->

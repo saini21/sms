@@ -61,18 +61,17 @@ class SentMessagesTable extends Table {
             ->scalar('message')
             ->maxLength('message', 255)
             ->requirePresence('message', 'create')
-            ->notEmpty('message');
+            ->notEmpty('message', 'Please enter message.');
         
         $validator
             ->scalar('mobile')
             ->maxLength('mobile', 255)
             ->requirePresence('mobile', 'create')
-            ->notEmpty('mobile');
+            ->notEmpty('mobile', "Please enter mobile number.");
         
         $validator
             ->boolean('status')
-            ->requirePresence('status', 'create')
-            ->notEmpty('status');
+            ->allowEmpty('status');
         
         $validator
             ->integer('approved')

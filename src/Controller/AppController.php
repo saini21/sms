@@ -70,9 +70,9 @@ class AppController extends Controller {
                 'action' => 'home'
             ],
         ]);
-    
+        
         $loggedInUser = $this->Cookie->read('loggedInUser');
-    
+        
         if (!empty($loggedInUser) && !$this->Auth->user()) {
             $this->Auth->setUser($loggedInUser);
             $this->redirect($this->Auth->redirectUrl());
@@ -85,6 +85,7 @@ class AppController extends Controller {
             $this->viewBuilder()->setLayout('home');
         }
     }
+    
     
     public function beforeFilter(Event $event) {
         /*
@@ -100,7 +101,7 @@ class AppController extends Controller {
     public function responseFormat() {
         $returnArray = [
             "code" => $this->responseCode,
-            "message"=> $this->responseMessage,
+            "message" => $this->responseMessage,
         ];
         if ($this->currentPage > 0) {
             $this->responseData['currentPage'] = $this->currentPage;
@@ -110,7 +111,7 @@ class AppController extends Controller {
             $this->responseData['pages'] = ceil($this->responseData['total'] / PAGE_LIMIT);
         }
         
-        $returnArray['data'] =  !empty($this->responseData) ? $this->responseData : ['message' => 'Data not found'];
+        $returnArray['data'] = !empty($this->responseData) ? $this->responseData : ['message' => 'Data not found'];
         
         return json_encode($returnArray);
     }

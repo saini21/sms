@@ -14,6 +14,7 @@
             <th scope="col"><?= $this->Paginator->sort('first_name') ?></th>
             <th scope="col"><?= $this->Paginator->sort('last_name') ?></th>
             <th scope="col"><?= $this->Paginator->sort('email') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('status') ?></th>
             
             <th scope="col"><?= $this->Paginator->sort('created') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -26,6 +27,13 @@
                 <td><?= h($user->first_name) ?></td>
                 <td><?= h($user->last_name) ?></td>
                 <td><?= h($user->email) ?></td>
+                <td>
+                    <?= $this->element('Admin/status', [
+                        'id' => $user->id,
+                        'status' => $user->status,
+                        'model' => 'Users'
+                    ]) ?>
+                </td>
                 <td><?= h($user->created->Nice()) ?></td>
                 <?= $this->element('Admin/actions', ['id' => $user->id]) ?>
             </tr>

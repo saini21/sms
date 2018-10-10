@@ -61,6 +61,7 @@ class UsersController extends AppController {
      * logout method
      */
     public function logout() {
+		$this->Cookie->delete('loggedInUser');
         $this->Flash->success(__('You are now logged out'));
         return $this->redirect($this->Auth->logout());
     }
@@ -76,11 +77,15 @@ class UsersController extends AppController {
             
             $user = $this->Auth->identify();
             if ($user) {
-                if ($this->request->data['remember_me']) {
-                    $this->Cookie->write('loggedInUser', $user, true, '1 year');
+                if($user['status']) {
+                    if ($this->request->data['remember_me']) {
+                        $this->Cookie->write('loggedInUser', $user, true, '1 year');
+                    }
+                    $this->Auth->setUser($user);
+                    return $this->redirect($this->Auth->redirectUrl());
+                } else {
+                    $this->Flash->error(__('Your account has been disabled, please contact admin.'));
                 }
-                $this->Auth->setUser($user);
-                return $this->redirect($this->Auth->redirectUrl());
             } else {
                 $this->Flash->error(__('Invalid username or password, try again'));
             }

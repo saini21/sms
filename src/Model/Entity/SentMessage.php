@@ -37,6 +37,10 @@ class SentMessage extends Entity {
         'status' => true,
         'approved' => true,
         'message_group' => true,
+        'is_duplicate' => true,
+        'wrong_text' => true,
+        'wrong_mobile' => true,
+        'has_paid' => true,
         'created' => true,
         'modified' => true,
         'user' => true

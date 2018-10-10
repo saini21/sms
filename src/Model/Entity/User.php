@@ -44,7 +44,8 @@ class User extends Entity {
         'created' => true,
         'modified' => true,
         'sent_messages' => true,
-        'subscriptions' => true
+        'subscriptions' => true,
+        'status' => true
     ];
     
     /**

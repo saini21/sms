@@ -49,18 +49,35 @@ class SentMessagesController extends AppController {
      */
     public function add() {
         $sentMessage = $this->SentMessages->newEntity();
+        
+        $this->set(compact('sentMessage'));
+    }
+    
+    
+    /**
+     * Add method
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
+    public function send() {
+        $this->autoRender = false;
+        $this->responseCode = CODE_BAD_REQUEST;
+        $sentMessage = $this->SentMessages->newEntity();
+        sleep(rand(2,10));
         if ($this->request->is('post')) {
             $sentMessage = $this->SentMessages->patchEntity($sentMessage, $this->request->getData());
             if ($this->SentMessages->save($sentMessage)) {
-                $this->Flash->success(__('The sent message has been saved.'));
-                
-                return $this->redirect(['action' => 'index']);
+                $this->responseMessage = "Successfully Sent";
+                $this->responseCode = SUCCESS_CODE;
+            } else {
+                $this->getErrorMessage($sentMessage->errors());
+                $this->responseCode = CODE_BAD_REQUEST;
             }
-            $this->Flash->error(__('The sent message could not be saved. Please, try again.'));
         }
-        $users = $this->SentMessages->Users->find('list', ['limit' => 200]);
-        $this->set(compact('sentMessage', 'users'));
+        echo $this->responseFormat();
     }
+    
+    
     
     /**
      * Edit method
