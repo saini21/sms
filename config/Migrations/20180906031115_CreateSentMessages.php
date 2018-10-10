@@ -35,6 +35,22 @@ class CreateSentMessages extends AbstractMigration {
             'default' => false,
             'null' => false,
         ]);
+        $table->addColumn('is_duplicate', 'boolean', [
+            'default' => false,
+            'null' => false,
+        ]);
+        $table->addColumn('wrong_text', 'boolean', [
+            'default' => false,
+            'null' => false,
+        ]);
+        $table->addColumn('wrong_mobile', 'boolean', [
+            'default' => false,
+            'null' => false,
+        ]);
+        $table->addColumn('has_paid', 'boolean', [
+            'default' => false,
+            'null' => false,
+        ]);
         $table->addColumn('message_group', 'string', [
             'default' => null,
             'limit' => 255,

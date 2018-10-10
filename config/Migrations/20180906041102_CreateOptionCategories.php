@@ -2,7 +2,7 @@
 
 use Migrations\AbstractMigration;
 
-class CreateOptions extends AbstractMigration {
+class CreateOptionCategories extends AbstractMigration {
     /**
      * Change Method.
      *
@@ -11,24 +11,8 @@ class CreateOptions extends AbstractMigration {
      * @return void
      */
     public function change() {
-        $table = $this->table('options');
-        $table->addColumn('option_category_id', 'biginteger', [
-            'default' => null,
-            'limit' => 20,
-            'null' => false,
-        ]);
-        
-        $table->addColumn('option_name', 'string', [
-            'default' => null,
-            'limit' => 255,
-            'null' => false,
-        ]);
-        $table->addColumn('option_value', 'string', [
-            'default' => null,
-            'limit' => 255,
-            'null' => false,
-        ]);
-        $table->addColumn('default_value', 'string', [
+        $table = $this->table('option_categories');
+        $table->addColumn('category', 'string', [
             'default' => null,
             'limit' => 255,
             'null' => false,

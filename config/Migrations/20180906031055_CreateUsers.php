@@ -42,6 +42,10 @@ class CreateUsers extends AbstractMigration {
             'limit' => 255,
             'null' => false,
         ]);
+        $table->addColumn('status', 'boolean', [
+            'default' => true,
+            'null' => false,
+        ]);
         $table->addColumn('created', 'datetime', [
             'default' => null,
             'null' => false,
