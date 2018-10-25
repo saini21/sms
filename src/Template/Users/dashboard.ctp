@@ -45,13 +45,16 @@
                                 <li class="g-mb-20">Cost <?= $subscriptionPackage->price ?> INR</li>
                                 <li class="g-mb-20">Pay By Paytm 7728020359</li>
                             </ul>
-                            <form action="<?= $this->Url->build(['controller' => 'Subscriptions', 'action' => 'paytm']); ?>" method="post">
-                                <input type="hidden" name="ORDER_ID" value="<?= "EWS_" . rand(1000, 9999) . "_" . $orderNumber ?>">
-                                <input type="hidden" name="CUST_ID" value="CUST00<?= $authUser['id'] ?>">
+                            <form
+                                action="<?= $this->Url->build(['controller' => 'Subscriptions', 'action' => 'paytm']); ?>"
+                                method="post">
+                                <input type="hidden" name="ORDER_ID"
+                                       value="<?= "EWS_" . $subscriptionPackage->id . "_" . $orderNumber ."_".rand(10000,99999) ?>">
+                                <input type="hidden" name="CUST_ID" value="CUST_<?= $authUser['id'] ?>">
                                 <input type="hidden" name="INDUSTRY_TYPE_ID" value="Retail">
                                 <input type="hidden" name="CUST_ID" value="CUST001">
                                 <input type="hidden" name="CHANNEL_ID" value="WEB">
-                                <input type="hidden" name="TXN_AMOUNT" value="1">
+                                <input type="hidden" name="TXN_AMOUNT" value="<?= (int)$subscriptionPackage->price ?>">
                                 <button
                                     class="btn text-uppercase u-btn-primary g-rounded-50 g-font-size-12 g-font-weight-700 g-pa-15-30 g-mb-10">
                                     Purchase

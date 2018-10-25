@@ -52,19 +52,19 @@ class UsersController extends AppController {
         
         $totalEarning = 0;
         
-        if(!$this->Auth->user('has_plan')) {
-    
+        if (!$this->Auth->user('has_plan')) {
+            
             $this->loadModel('SubscriptionPackages');
             $subscriptionPackages = $this->SubscriptionPackages->find('all')->where(['SubscriptionPackages.status' => 1]);
             $this->set('subscriptionPackages', $subscriptionPackages);
-    
+                        
             $this->loadModel('Subscriptions');
-            $subscription = $this->Subscriptions->find('all')->select(['order_number'=>'MAX(Subscriptions.id)'])->first();
+            $subscription = $this->Subscriptions->find('all')->select(['order_number' => 'MAX(Subscriptions.id)'])->first();
             $this->set('orderNumber', $subscription->order_number + 1);
         }
         
         
-        $this->set(compact('totalActivities', 'processedActivities', 'pendingActivities', 'totalEarning'));
+       $this->set(compact('totalActivities', 'processedActivities', 'pendingActivities', 'totalEarning'));
     }
     
     
@@ -88,7 +88,7 @@ class UsersController extends AppController {
             
             $user = $this->Auth->identify();
             if ($user) {
-                    if ($user['status']) {
+                if ($user['status']) {
                     if ($this->request->data['remember_me']) {
                         $this->Cookie->write('loggedInUser', $user, true, '1 year');
                     }
@@ -123,18 +123,18 @@ class UsersController extends AppController {
             
             if ($this->Users->save($user)) {
                 
-                //                $options = [
-                //					'template' => 'welcome',
-                //					'to' => $user->email,
-                //					'subject' => _('Welcome to '. SITE_TITLE),
-                //					'viewVars' => [
-                //						'name' => $user->first_name,
-                //						'email' => $user->email
-                //					]
-                //				];
-                //
-                //				$this->loadComponent('EmailManager');
-                //				$this->EmailManager->sendEmail($options);
+                $options = [
+                    'template' => 'welcome',
+                    'to' => $user->email,
+                    'subject' => _('Welcome to ' . SITE_TITLE),
+                    'viewVars' => [
+                        'name' => $user->first_name,
+                        'email' => $user->email
+                    ]
+                ];
+                
+                $this->loadComponent('EmailManager');
+                $this->EmailManager->sendEmail($options);
                 $this->Auth->setUser($user);
                 $this->Flash->success(__('You have successfully registered.'));
                 return $this->redirect($this->Auth->redirectUrl());

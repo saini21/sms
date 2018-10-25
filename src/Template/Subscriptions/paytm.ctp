@@ -15,14 +15,13 @@
         <div class="col-md-4">
             <?php
             foreach ($params as $name => $value) {
-                echo '<input type="text" name="' . $name . '" value="' . $value . '"> <br />';
+                echo '<input type="hidden" name="' . $name . '" value="' . $value . '"> <br />';
             }
             ?>
-            <input type="text" name="CHECKSUMHASH" value="<?= $checkSum ?>"><br/>
-            <input type="text" name="CALLBACK_URL" value="<?= SITE_URL ?>/subscriptions/paytmReceiver/?ORDER_ID=<?= $params['ORDER_ID'] ?>" --><br/>
-            <input type="submit" value="GO">
+            <input type="hidden" name="CHECKSUMHASH" value="<?= $checkSum ?>"><br/>
+            <input type="submit" value="Submit" />
             <script type="text/javascript">
-                //document.f1.submit();
+                document.f1.submit();
             </script>
         </div>
         <div class="col-md-4">&nbsp;</div>

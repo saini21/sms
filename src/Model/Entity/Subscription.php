@@ -31,6 +31,7 @@ class Subscription extends Entity {
     protected $_accessible = [
         'user_id' => true,
         'subscription_package_id' => true,
+        'response' => true,
         'status' => true,
         'created' => true,
         'modified' => true,

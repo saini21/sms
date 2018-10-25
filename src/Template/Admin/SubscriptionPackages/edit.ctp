@@ -24,7 +24,7 @@
         <div class="form-group g-mb-30">
             <label class="g-mb-10"><?= __('Price') ?></label>
             <div class="g-pos-rel">
-                <?= $this->Form->control('price', ['label' => false, "class" => "form-control g-brd-gray-light-v3--focus g-py-10"]); ?>
+                <?= $this->Form->control('price', ['type'=>'number', 'label' => false, "class" => "form-control g-brd-gray-light-v3--focus g-py-10"]); ?>
             </div>
         </div>
         <div class="form-group g-mb-30">
