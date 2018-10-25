@@ -127,7 +127,7 @@
                                 <li class="g-mb-20">Pay By Paytm 7728020359</li>
                             </ul>
                             <a class="btn text-uppercase u-btn-primary g-rounded-50 g-font-size-12 g-font-weight-700 g-pa-15-30 g-mb-10"
-                               href="#!">Order Now</a></div>
+                               href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'register']); ?>">Order Now</a></div>
                         <!-- End Article Content -->
                     </article>
                     <!-- End Article -->

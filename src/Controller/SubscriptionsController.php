@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -10,105 +11,35 @@ use App\Controller\AppController;
  *
  * @method \App\Model\Entity\Subscription[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
-class SubscriptionsController extends AppController
-{
-
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
-    public function index()
-    {
-        $this->paginate = [
-            'contain' => ['Users', 'SubscriptionPackages']
-        ];
-        $subscriptions = $this->paginate($this->Subscriptions);
-
-        $this->set(compact('subscriptions'));
+class SubscriptionsController extends AppController {
+    
+    public function initialize() {
+        parent::initialize();
+        $this->Auth->allow(['paytmReceiver']);
     }
-
-    /**
-     * View method
-     *
-     * @param string|null $id Subscription id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $subscription = $this->Subscriptions->get($id, [
-            'contain' => ['Users', 'SubscriptionPackages']
-        ]);
-
-        $this->set('subscription', $subscription);
+    
+    public function paytm() {
+        $this->viewBuilder()->setLayout('paytm');
+        $params["MID"] = PAYTM_MERCHANT_MID;
+        $params["ORDER_ID"] = $this->request->data['ORDER_ID'];
+        $params["CUST_ID"] = $this->request->data['CUST_ID'];
+        $params["INDUSTRY_TYPE_ID"] = $this->request->data['INDUSTRY_TYPE_ID'];
+        $params["CHANNEL_ID"] = $this->request->data['CHANNEL_ID'];
+        $params["TXN_AMOUNT"] = $this->request->data['TXN_AMOUNT'];
+        $params["WEBSITE"] = PAYTM_MERCHANT_WEBSITE;
+        
+        $this->loadComponent('Paytm');
+        
+        $checkSum = $this->Paytm->getChecksumFromArray($params, PAYTM_MERCHANT_KEY);
+        
+        $this->set('checkSum', $checkSum);
+        $this->set('params', $params);
     }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $subscription = $this->Subscriptions->newEntity();
-        if ($this->request->is('post')) {
-            $subscription = $this->Subscriptions->patchEntity($subscription, $this->request->getData());
-            if ($this->Subscriptions->save($subscription)) {
-                $this->Flash->success(__('The subscription has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The subscription could not be saved. Please, try again.'));
-        }
-        $users = $this->Subscriptions->Users->find('list', ['limit' => 200]);
-        $subscriptionPackages = $this->Subscriptions->SubscriptionPackages->find('list', ['limit' => 200]);
-        $this->set(compact('subscription', 'users', 'subscriptionPackages'));
-    }
-
-    /**
-     * Edit method
-     *
-     * @param string|null $id Subscription id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function edit($id = null)
-    {
-        $subscription = $this->Subscriptions->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $subscription = $this->Subscriptions->patchEntity($subscription, $this->request->getData());
-            if ($this->Subscriptions->save($subscription)) {
-                $this->Flash->success(__('The subscription has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The subscription could not be saved. Please, try again.'));
-        }
-        $users = $this->Subscriptions->Users->find('list', ['limit' => 200]);
-        $subscriptionPackages = $this->Subscriptions->SubscriptionPackages->find('list', ['limit' => 200]);
-        $this->set(compact('subscription', 'users', 'subscriptionPackages'));
-    }
-
-    /**
-     * Delete method
-     *
-     * @param string|null $id Subscription id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $subscription = $this->Subscriptions->get($id);
-        if ($this->Subscriptions->delete($subscription)) {
-            $this->Flash->success(__('The subscription has been deleted.'));
-        } else {
-            $this->Flash->error(__('The subscription could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
+    
+    public function paytmReceiver() {
+        pr($_REQUEST);
+        //file_put_contents(WWW_ROOT . 'response.txt', print_r($_REQUEST, true));
+        
+        die;
     }
 }

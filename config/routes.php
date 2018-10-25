@@ -60,6 +60,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     
     
     $routes->connect('/', ['controller' => 'Users', 'action' => 'home']);
+    $routes->connect('/dashboard', ['controller' => 'Users', 'action' => 'dashboard']);
+    $routes->connect('/profile', ['controller' => 'Users', 'action' => 'profile']);
     $routes->connect('/send-message', ['controller' => 'SendMessages', 'action' => 'add']);
     $routes->connect('/my-activities', ['controller' => 'SendMessages', 'action' => 'index']);
     $routes->connect('/privacy-policy', ['controller' => 'Pages', 'action' => 'privacyPolicy']);
@@ -69,6 +71,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect('/contact', ['controller' => 'Pages', 'action' => 'contact']);
     $routes->connect('/plans', ['controller' => 'SubscriptionPackages', 'action' => 'plans']);
     $routes->connect('/about-us', ['controller' => 'Pages', 'action' => 'about_us']);
+    $routes->connect('/paytm', ['controller' => 'Subscriptions', 'action' => 'paytm']);
 
 
     /**

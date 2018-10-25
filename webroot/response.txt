@@ -1,0 +1,12 @@
+Array
+(
+    [ORDERID] => EWS_9241_2
+    [MID] => SinghS73900361277933
+    [TXNAMOUNT] => 1.00
+    [CURRENCY] => INR
+    [STATUS] => TXN_FAILURE
+    [RESPCODE] => 330
+    [RESPMSG] => Paytm checksum mismatch.
+    [BANKTXNID] => 
+    [CHECKSUMHASH] => 3iy/33fTO4NgAdNgLti1BQe9Y6lVhqap28ypJZhVErXRu2J84N6P0TBFF0PEp/aVhl6bQbnVwnoSzxueEb2lvcAm3sPXQbh5GlzrBa+2luY=
+)

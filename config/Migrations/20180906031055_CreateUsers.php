@@ -46,6 +46,18 @@ class CreateUsers extends AbstractMigration {
             'default' => true,
             'null' => false,
         ]);
+        $table->addColumn('new_activity_count', 'biginteger', [
+            'default' => 0,
+            'null' => false,
+        ]);
+        $table->addColumn('total_activity_count', 'biginteger', [
+            'default' => 0,
+            'null' => false,
+        ]);
+        $table->addColumn('has_plan', 'integer', [
+            'default' => 0,
+            'null' => false,
+        ]);
         $table->addColumn('created', 'datetime', [
             'default' => null,
             'null' => false,

@@ -13,6 +13,13 @@ use App\Controller\AppController;
  */
 class SentMessagesController extends AppController {
     
+    public function initialize() {
+        parent::initialize();
+        if(!$this->Auth->user('has_plan')){
+            return $this->redirect(['controller'=>'Users','action' => 'index']);
+        }
+    }
+    
     /**
      * Index method
      *

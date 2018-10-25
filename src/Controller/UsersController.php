@@ -52,6 +52,17 @@ class UsersController extends AppController {
         
         $totalEarning = 0;
         
+        if(!$this->Auth->user('has_plan')) {
+    
+            $this->loadModel('SubscriptionPackages');
+            $subscriptionPackages = $this->SubscriptionPackages->find('all')->where(['SubscriptionPackages.status' => 1]);
+            $this->set('subscriptionPackages', $subscriptionPackages);
+    
+            $this->loadModel('Subscriptions');
+            $subscription = $this->Subscriptions->find('all')->select(['order_number'=>'MAX(Subscriptions.id)'])->first();
+            $this->set('orderNumber', $subscription->order_number + 1);
+        }
+        
         
         $this->set(compact('totalActivities', 'processedActivities', 'pendingActivities', 'totalEarning'));
     }
@@ -61,7 +72,7 @@ class UsersController extends AppController {
      * logout method
      */
     public function logout() {
-		$this->Cookie->delete('loggedInUser');
+        $this->Cookie->delete('loggedInUser');
         $this->Flash->success(__('You are now logged out'));
         return $this->redirect($this->Auth->logout());
     }
@@ -77,7 +88,7 @@ class UsersController extends AppController {
             
             $user = $this->Auth->identify();
             if ($user) {
-                if($user['status']) {
+                    if ($user['status']) {
                     if ($this->request->data['remember_me']) {
                         $this->Cookie->write('loggedInUser', $user, true, '1 year');
                     }
@@ -253,7 +264,6 @@ class UsersController extends AppController {
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function profile() {
-        
         
         $user = $this->Users->get($this->Auth->user('id'));
         
