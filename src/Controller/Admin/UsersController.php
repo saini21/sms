@@ -36,10 +36,19 @@ class UsersController extends AppController {
         $sentMessages = $this->SentMessages->find('all')->where(['SentMessages.user_id'=>$userId])->contain(['Users'=>function($q) {
             return $q->select(['Users.id', 'Users.first_name', 'Users.last_name', 'Users.email']);
         }])->hydrate(false);
+
+        $this->loadModel('Users');
+        $this->loadModel('Subscriptions');
+
+        $user =
+
+        $activityStats = [];
+
+
         
         $activities = $this->paginate($sentMessages);
         
-        $this->set(compact('activities'));
+        $this->set(compact('activities', 'userId', 'activityStats'));
     }
     
     /**

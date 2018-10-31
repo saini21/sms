@@ -118,6 +118,7 @@ class SentMessagesController extends AppController {
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null) {
+        return $this->redirect(['controller'=>'Users','action' => 'index']);
         $this->request->allowMethod(['post', 'delete']);
         $sentMessage = $this->SentMessages->get($id);
         if ($this->SentMessages->delete($sentMessage)) {

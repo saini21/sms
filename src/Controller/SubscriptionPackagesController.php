@@ -26,6 +26,9 @@ class SubscriptionPackagesController extends AppController {
     public function plans() {
         $this->viewBuilder()->setLayout('home');
         $subscriptionPackages = $this->paginate($this->SubscriptionPackages);
+
+        $paytmNumber = $this->getOption('payment_receiver_mobile_number');
+        $this->set('paytmNumber', $paytmNumber);
         
         $this->set(compact('subscriptionPackages'));
     }

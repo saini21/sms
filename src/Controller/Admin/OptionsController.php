@@ -12,97 +12,31 @@ use App\Controller\Admin\AppController;
  * @method \App\Model\Entity\Option[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class OptionsController extends AppController {
-    
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
-    public function index() {
-        $options = $this->paginate($this->Options);
-        
-        $this->set(compact('options'));
+
+
+    public function settings($category = "General") {
+        $options = $this->Options->find('all')->where(['category' => $category]);
+        $categories = $this->Options->find('all')->select(['category' => 'DISTINCT Options.category'])->hydrate(false)->toArray();
+        $this->set('category', $category);
+        $this->set('options', $options);
+        $this->set('categories', $categories);
     }
-    
-    
-    public function settings()
-    {
-    
-    }
-    
-    /**
-     * View method
-     *
-     * @param string|null $id Option id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null) {
-        $option = $this->Options->get($id, [
-            'contain' => []
-        ]);
-        
-        $this->set('option', $option);
-    }
-    
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function add() {
-        $option = $this->Options->newEntity();
-        if ($this->request->is('post')) {
-            $option = $this->Options->patchEntity($option, $this->request->getData());
-            if ($this->Options->save($option)) {
-                $this->Flash->success(__('The option has been saved.'));
-                
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The option could not be saved. Please, try again.'));
-        }
-        $this->set(compact('option'));
-    }
-    
-    /**
-     * Edit method
-     *
-     * @param string|null $id Option id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function edit($id = null) {
-        $option = $this->Options->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $option = $this->Options->patchEntity($option, $this->request->getData());
-            if ($this->Options->save($option)) {
-                $this->Flash->success(__('The option has been saved.'));
-                
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The option could not be saved. Please, try again.'));
-        }
-        $this->set(compact('option'));
-    }
-    
-    /**
-     * Delete method
-     *
-     * @param string|null $id Option id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null) {
-        $this->request->allowMethod(['post', 'delete']);
-        $option = $this->Options->get($id);
-        if ($this->Options->delete($option)) {
-            $this->Flash->success(__('The option has been deleted.'));
+
+    public function save() {
+
+        $this->autoRender = false;
+        $this->responseCode = CODE_BAD_REQUEST;
+        $option = $this->Options->find('all')->where(['option_name' => $this->request->data['name']])->first();
+        $option->option_value = $this->request->data['value'];
+        if ($this->Options->save($option)) {
+            $this->responseMessage = __('Saved.');
+            $this->responseData = $this->request->data;
         } else {
-            $this->Flash->error(__('The option could not be deleted. Please, try again.'));
+            $this->responseMessage = __('Something went wrong. Please, try again.');
         }
-        
-        return $this->redirect(['action' => 'index']);
+
+        echo $this->responseFormat();
+        exit;
     }
+
 }

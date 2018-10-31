@@ -38,6 +38,9 @@ class UsersController extends AppController {
         
         $this->loadModel('PaymentProofs');
         $paymentProofs = $this->PaymentProofs->find('all')->where(['PaymentProofs.status' => 1]);
+
+        $paytmNumber = $this->getOption('payment_receiver_mobile_number');
+        $this->set('paytmNumber', $paytmNumber);
         
         $this->set(compact('subscriptionPackages', 'paymentProofs'));
     }
@@ -62,7 +65,9 @@ class UsersController extends AppController {
             $subscription = $this->Subscriptions->find('all')->select(['order_number' => 'MAX(Subscriptions.id)'])->first();
             $this->set('orderNumber', $subscription->order_number + 1);
         }
-        
+
+        $paytmNumber = $this->getOption('payment_receiver_mobile_number');
+        $this->set('paytmNumber', $paytmNumber);
         
        $this->set(compact('totalActivities', 'processedActivities', 'pendingActivities', 'totalEarning'));
     }

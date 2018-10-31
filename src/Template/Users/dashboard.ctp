@@ -43,7 +43,7 @@
                                 <li class="g-mb-20">Package <?= $subscriptionPackage->price ?></li>
                                 <li class="g-mb-20">Earn <?= $subscriptionPackage->earn_per_sms ?> paisa / Sms</li>
                                 <li class="g-mb-20">Cost <?= $subscriptionPackage->price ?> INR</li>
-                                <li class="g-mb-20">Pay By Paytm 7728020359</li>
+                                <li class="g-mb-20">Pay By Paytm <?= $paytmNumber ?></li>
                             </ul>
                             <form
                                 action="<?= $this->Url->build(['controller' => 'Subscriptions', 'action' => 'paytm']); ?>"

@@ -4,16 +4,17 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Option Entity
+ * UserPayment Entity
  *
  * @property int $id
- * @property string $option_name
- * @property string $option_value
- * @property string $default_value
+ * @property int $user_id
+ * @property float $payment
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
+ *
+ * @property \App\Model\Entity\User $user
  */
-class Option extends Entity
+class UserPayment extends Entity
 {
 
     /**
@@ -26,10 +27,10 @@ class Option extends Entity
      * @var array
      */
     protected $_accessible = [
-        'option_name' => true,
-        'option_value' => true,
-        'default_value' => true,
+        'user_id' => true,
+        'payment' => true,
         'created' => true,
-        'modified' => true
+        'modified' => true,
+        'user' => true
     ];
 }

@@ -22,7 +22,7 @@ $approved = [
                 <th scope="col"><?= $this->Paginator->sort('status') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('approved') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created', 'Send At') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <!-- th scope="col" class="actions"><?= __('Actions') ?></th -->
             </tr>
         </thead>
         <tbody>
@@ -33,10 +33,10 @@ $approved = [
                 <td><?= ($sentMessage->status) ? "Read" : "Unread" ?></td>
                 <td><?= $approved[$sentMessage->approved] ?></td>
                 <td><?= h($sentMessage->created->nice()) ?></td>
-                <td class="actions">
+                <!-- td class="actions">
                     <?= $this->Form->postLink('<i class=\'hs-admin-close\'></i> Delete', ['action' => 'delete', $sentMessage->id], ['confirm' => __('Are you sure you want to delete this activity?'), 'class'=>'btn btn-danger btn-sm', 'escape' => false]) ?>
                     
-                </td>
+                </td -->
             </tr>
             <?php endforeach; ?>
         </tbody>

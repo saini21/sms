@@ -124,7 +124,7 @@
                                 <li class="g-mb-20">Package <?= $subscriptionPackage->price ?></li>
                                 <li class="g-mb-20">Earn <?= $subscriptionPackage->earn_per_sms ?> paisa / Sms</li>
                                 <li class="g-mb-20">Cost <?= $subscriptionPackage->price ?> INR</li>
-                                <li class="g-mb-20">Pay By Paytm 7728020359</li>
+                                <li class="g-mb-20">Pay By Paytm <?= $paytmNumber ?></li>
                             </ul>
                             <a class="btn text-uppercase u-btn-primary g-rounded-50 g-font-size-12 g-font-weight-700 g-pa-15-30 g-mb-10"
                                href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'register']); ?>">Order Now</a></div>

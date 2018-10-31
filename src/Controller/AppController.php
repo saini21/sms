@@ -27,13 +27,13 @@ use Cake\Event\Event;
  * @link https://book.cakephp.org/3.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-    
+
     public $responseCode = SUCCESS_CODE;
     public $responseMessage = "";
     public $responseData = [];
     public $currentPage = 0;
     public $authUserId = 0;
-    
+
     /**
      * Initialization hook method.
      *
@@ -45,48 +45,30 @@ class AppController extends Controller {
      */
     public function initialize() {
         parent::initialize();
-        
+
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent('Cookie');
-        
-        $this->loadComponent('Auth', [
-            'userModel' => 'Users',
-            'authenticate' => [
-                'Form' => [
-                    'fields' => ['username' => 'email', 'password' => 'password']
-                ]
-            ],
-            'loginAction' => [
-                'controller' => 'Users',
-                'action' => 'login'
-            ],
-            'loginRedirect' => [
-                'controller' => 'Users',
-                'action' => 'dashboard'
-            ],
-            'logoutRedirect' => [
-                'controller' => 'Users',
-                'action' => 'home'
-            ],
-        ]);
-        
+
+        $this->loadComponent('Auth', ['userModel' => 'Users', 'authenticate' => ['Form' => ['fields' => ['username' => 'email', 'password' => 'password']]], 'loginAction' => ['controller' => 'Users', 'action' => 'login'], 'loginRedirect' => ['controller' => 'Users', 'action' => 'dashboard'], 'logoutRedirect' => ['controller' => 'Users', 'action' => 'home'],]);
+
         $loggedInUser = $this->Cookie->read('loggedInUser');
-        
+
         if (!empty($loggedInUser) && !$this->Auth->user()) {
             $this->Auth->setUser($loggedInUser);
             $this->redirect($this->Auth->redirectUrl());
         }
-        
+
         if ($this->Auth->user()) {
             $this->set('authUser', $this->Auth->user());
         } else {
-            //die('1');
             $this->viewBuilder()->setLayout('home');
         }
+
+        $this->setOptions();
     }
-    
-    
+
+
     public function beforeFilter(Event $event) {
         /*
          * This is used to redirect the user if admin is login and want to access the user site
@@ -96,26 +78,23 @@ class AppController extends Controller {
             return $this->redirect(['controller' => 'Admins', 'action' => 'dashboard', 'prefix' => 'admin']);
         }
     }
-    
-    
+
+
     public function responseFormat() {
-        $returnArray = [
-            "code" => $this->responseCode,
-            "message" => $this->responseMessage,
-        ];
+        $returnArray = ["code" => $this->responseCode, "message" => $this->responseMessage,];
         if ($this->currentPage > 0) {
             $this->responseData['currentPage'] = $this->currentPage;
         }
-        
+
         if (isset($this->responseData['total'])) {
             $this->responseData['pages'] = ceil($this->responseData['total'] / PAGE_LIMIT);
         }
-        
+
         $returnArray['data'] = !empty($this->responseData) ? $this->responseData : ['message' => 'Data not found'];
-        
+
         return json_encode($returnArray);
     }
-    
+
     public function getErrorMessage($errors, $show = false, $field = []) {
         if (is_array($errors)) {
             foreach ($errors as $key => $error) {
@@ -127,9 +106,33 @@ class AppController extends Controller {
             $this->responseMessage = ($show) ? implode(" >> ", $field) . " >> " . $errors : $errors;
         }
     }
-    
+
     public function getCurrentPage() {
         $this->currentPage = (!empty($this->request->query['page']) && $this->request->query['page'] > 0) ? $this->request->query['page'] : 1;
         return $this->currentPage;
+    }
+
+    public function getOption($name) {
+        $this->loadModel('Options');
+
+        $option = $this->Options->find('all')->where(['option_name' => $name])->first();
+
+        return (empty($option)) ? "Not Found" : (empty($option->option_value)) ? $option->default_value : $option->option_value;
+    }
+
+    public function setOptions() {
+        $this->loadModel('Options');
+
+        $optionsQuery = $this->Options->find('all')->where(['category' => 'General'])->all();
+
+        $options = [];
+
+        foreach ($optionsQuery as $o) {
+            $options[$o->option_name] = (empty($o->option_value)) ? $o->default_value : $o->option_value;
+        }
+
+       // pr($options); die;
+
+        $this->set('options', $options);
     }
 }
