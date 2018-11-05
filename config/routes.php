@@ -61,6 +61,8 @@ Router::scope('/', function (RouteBuilder $routes) {
     
     $routes->connect('/', ['controller' => 'Users', 'action' => 'home']);
     $routes->connect('/dashboard', ['controller' => 'Users', 'action' => 'dashboard']);
+    $routes->connect('/activities', ['controller' => 'SentMessages', 'action' => 'index']);
+    $routes->connect('/send-message', ['controller' => 'SentMessages', 'action' => 'add']);
     $routes->connect('/profile', ['controller' => 'Users', 'action' => 'profile']);
     $routes->connect('/send-message', ['controller' => 'SendMessages', 'action' => 'add']);
     $routes->connect('/my-activities', ['controller' => 'SendMessages', 'action' => 'index']);

@@ -98,4 +98,12 @@ class AppController extends Controller {
         return $this->currentPage;
     }
     
+    public function getOption($name) {
+        $this->loadModel('Options');
+        
+        $option = $this->Options->find('all')->where(['option_name' => $name])->first();
+        
+        return (empty($option)) ? "Not Found" : (empty($option->option_value)) ? $option->default_value : $option->option_value;
+    }
+    
 }

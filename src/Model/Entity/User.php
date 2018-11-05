@@ -42,6 +42,7 @@ class User extends Entity {
         'new_activity_count' => true,
         'total_activity_count' => true,
         'has_plan' => true,
+        'payment_made' => true,
         'created' => true,
         'modified' => true,
         'sent_messages' => true,

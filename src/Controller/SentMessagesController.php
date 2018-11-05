@@ -31,7 +31,10 @@ class SentMessagesController extends AppController {
         ];
         $sentMessages = $this->paginate($this->SentMessages->find()->where(['SentMessages.user_id'=>$this->Auth->user('id')]));
         
+        $this->earningStats($this->Auth->user('id'));
+        
         $this->set(compact('sentMessages'));
+        
     }
     
     /**

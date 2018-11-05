@@ -37,7 +37,7 @@ class SubscriptionsController extends AppController {
     }
     
     public function paytmReceiver() {
-    
+        
         if ($this->Auth->user('has_plan')) {
             $this->Flash->warning(__('Wrong place, your subscription package has already been activated.'));
             return $this->redirect(['controller' => 'Users', 'action' => 'dashboard']);
@@ -68,21 +68,21 @@ class SubscriptionsController extends AppController {
         
         
         if ($response['STATUS'] == 'TXN_SUCCESS') {
-    
-            $subscriptionPackageId  = explode("_", $response['ORDERID'])[1];
+            
+            $subscriptionPackageId = explode("_", $response['ORDERID'])[1];
             
             $subscription = $this->Subscriptions->find('all')->where(['Subscriptions.user_id' => $this->Auth->user('id')])->first();
             
-            if(empty($subscription)){
+            if (empty($subscription)) {
                 $subscription = $this->Subscriptions->newEntity();
             }
-    
+            
             $subscription->user_id = $this->Auth->user('id');
             $subscription->subscription_package_id = $subscriptionPackageId;
             $subscription->status = 1;
             $subscription->response = json_encode($response);
             
-            if($this->Subscriptions->save($subscription)){
+            if ($this->Subscriptions->save($subscription)) {
                 $this->loadModel('Users');
                 $user = $this->Users->findById($this->Auth->user('id'))->first();
                 $user->has_plan = 1;
@@ -96,6 +96,47 @@ class SubscriptionsController extends AppController {
             $this->Flash->error(__('Payment process has been failed, please try again.'));
         }
         
+        return $this->redirect(['controller' => 'Users', 'action' => 'dashboard']);
+    }
+    
+    public function subscribe($packageId = null) {
+        
+        $this->loadModel('SubscriptionPackages');
+        
+        $package = $this->SubscriptionPackages->find('all')->where(['id' => $packageId])->first();
+        
+        $this->set('package', $package);
+        
+        $paytmNumber = $this->getOption('payment_receiver_mobile_number');
+        $this->set('paytmNumber', $paytmNumber);
+    }
+    
+    //ALTER TABLE  `users` ADD  `payment_made` TINYINT( 1 ) NOT NULL DEFAULT  '0' AFTER  `has_plan` ;
+    public function subscribeApi() {
+        
+        if ($this->Auth->user('has_plan')) {
+            $this->Flash->warning(__('Wrong place, your subscription package has already been activated.'));
+            return $this->redirect(['controller' => 'Users', 'action' => 'dashboard']);
+        }
+        
+        $data = $this->request->data;
+        
+        $subscription = $this->Subscriptions->newEntity();
+        $subscription->user_id = $this->Auth->user('id');
+        $subscription->subscription_package_id = base64_decode($data['p']);
+        $subscription->response = $data['response'];
+        $subscription->status = 0;
+        if ($this->Subscriptions->save($subscription)) {
+            $this->loadModel('Users');
+            $user = $this->Users->findById($this->Auth->user('id'))->first();
+            $user->payment_made = 1;
+            $this->Users->save($user);
+            $this->Auth->setUser($user);
+            $this->Flash->success(__('Thank you, your subscription package will be activated with 24 hours.'));
+        } else {
+            $this->Flash->success(__('Something went wrong, please try again.'));
+        }
+    
         return $this->redirect(['controller' => 'Users', 'action' => 'dashboard']);
     }
 }

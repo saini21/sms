@@ -126,8 +126,8 @@
                                 <li class="g-mb-20">Cost <?= $subscriptionPackage->price ?> INR</li>
                                 <li class="g-mb-20">Pay By Paytm <?= $paytmNumber ?></li>
                             </ul>
-                            <a class="btn text-uppercase u-btn-primary g-rounded-50 g-font-size-12 g-font-weight-700 g-pa-15-30 g-mb-10"
-                               href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'register']); ?>">Order Now</a></div>
+                            <a class="btn text-uppercase u-btn-primary g-rounded-50 g-font-size-12 g-font-weight-700 g-pa-15-30 g-mb-10 select-plan"
+                               href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'register']); ?>" id="plan_<?= $subscriptionPackage->id ?>">Order Now</a></div>
                         <!-- End Article Content -->
                     </article>
                     <!-- End Article -->
@@ -333,6 +333,12 @@
             loop: true,
             backDelay: 1500
         });
+        $('.select-plan').click(function (e) {
+            e.preventDefault();
+            localStorage.setItem("SelectedPlan", $(this).attr('id'));
+            window.location.href = $(this).attr('href');
+        });
+        
     });
     
     $(window).on('load', function () {

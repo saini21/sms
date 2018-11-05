@@ -17,6 +17,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\I18n\Number;
 
 /**
  * Application Controller
@@ -134,5 +135,52 @@ class AppController extends Controller {
        // pr($options); die;
 
         $this->set('options', $options);
+    }
+    
+    public function earningStats($userId = null){
+        $this->loadModel('Subscriptions');
+        $this->loadModel('SentMessages');
+    
+        $subscription = $this->Subscriptions->find('all')->where(['Subscriptions.user_id' => $userId])->contain(['SubscriptionPackages'])->first();
+    
+        $correctSmsCount = $this->SentMessages->find('all')->where(['SentMessages.user_id' => $userId, 'SentMessages.approved' => 1])->count();
+        $duplicateSmsCount = $this->SentMessages->find('all')->where(['SentMessages.user_id' => $userId, 'SentMessages.is_duplicate' => true])->count();
+        $rejectedSmsCount = $this->SentMessages->find('all')->where(['SentMessages.user_id' => $userId, 'SentMessages.approved' => 2, 'SentMessages.is_duplicate' => false])->count();
+    
+        $duplicateSmsPenalty = $this->getOption('duplicate_sms_penalty');
+        $rejectedSmsPenalty = $this->getOption('rejected_sms_penalty');
+    
+        $correctSmsMoney = ($correctSmsCount * $subscription->subscription_package->earn_per_sms) / 100;
+        $duplicateSmsMoney = $duplicateSmsCount * $duplicateSmsPenalty;
+        $rejectedSmsMoney = $rejectedSmsCount * $rejectedSmsPenalty;
+        $totalSmsMoney = $correctSmsMoney - $duplicateSmsMoney - $rejectedSmsMoney;
+        $totalSmsCount = $correctSmsCount + $duplicateSmsCount + $rejectedSmsCount;
+    
+        $activityStats = [
+            [
+                'type' => 'Correctly Send SMS',
+                'count' => $correctSmsCount,
+                'money' => "Rs. " . Number::precision($correctSmsMoney, 2) . "/-"
+            ],
+            [
+                'type' => 'Duplicate SMS',
+                'count' => $duplicateSmsCount,
+                'money' => "Rs. " . Number::precision($duplicateSmsMoney, 2) . "/-"
+            ],
+            [
+                'type' => 'Rejected SMS',
+                'count' => $rejectedSmsCount,
+                'money' => "Rs. " . Number::precision($rejectedSmsMoney, 2) . "/-"
+            ],
+            [
+                'type' => 'Total',
+                'count' => $totalSmsCount,
+                'money' => "Rs. " . Number::precision($totalSmsMoney, 2) . (($totalSmsMoney > 0) ? "/- Earning" : "/- Penalty")
+            ]
+        ];
+        
+        $this->set('activityStats', $activityStats);
+        
+        return $activityStats;
     }
 }

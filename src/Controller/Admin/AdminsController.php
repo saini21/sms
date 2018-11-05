@@ -188,6 +188,12 @@ class AdminsController extends AppController {
             $entity->$field = !$entity->$field;
             
             if ($this->$model->save($entity)) {
+                if($model == "Subscriptions"){
+                    $this->loadModel('Users');
+                    $user = $this->Users->find('all')->where(['id'=>$entity->user_id])->first();
+                    $user->has_plan = ($entity->$field)? 1 : 0;
+                    $this->Users->save($user);
+                }
                 $this->responseCode = SUCCESS_CODE;
                 $this->responseData['new_status'] = $entity->$field;
             }

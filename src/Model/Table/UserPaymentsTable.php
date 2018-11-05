@@ -24,7 +24,7 @@ use Cake\Validation\Validator;
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class UserPaymentsTable extends Table {
-
+    
     /**
      * Initialize method
      *
@@ -33,25 +33,25 @@ class UserPaymentsTable extends Table {
      */
     public function initialize(array $config) {
         parent::initialize($config);
-
+        
         $this->setTable('user_payments');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
-
+        
         $this->addBehavior('Timestamp');
-
+        
         $this->belongsTo('Users', ['foreignKey' => 'user_id', 'joinType' => 'INNER']);
-
+        
         //ALTER TABLE  `users` ADD  `total_paid` FLOAT NOT NULL AFTER  `has_plan`;
         $this->addBehavior('CounterCache', ['Users' => ['total_paid' => function ($event, $entity, $table, $original) {
             $payment = $table->find('all')->select(['sum' => 'SUM(payment)'])->first();
             return $payment->sum;
         }]]);
-
+        
         //INSERT INTO `sms`.`options` (`id`, `category`, `option_name`, `option_value`, `default_value`, `created`, `modified`) VALUES (NULL, 'Penalties', 'duplicate_sms_penality', '10', '10', '', '');
-
+        
     }
-
+    
     /**
      * Default validation rules.
      *
@@ -60,12 +60,12 @@ class UserPaymentsTable extends Table {
      */
     public function validationDefault(Validator $validator) {
         $validator->integer('id')->allowEmpty('id', 'create');
-
+        
         $validator->numeric('payment')->requirePresence('payment', 'create')->notEmpty('payment');
-
+        
         return $validator;
     }
-
+    
     /**
      * Returns a rules checker object that will be used for validating
      * application integrity.
@@ -75,7 +75,7 @@ class UserPaymentsTable extends Table {
      */
     public function buildRules(RulesChecker $rules) {
         $rules->add($rules->existsIn(['user_id'], 'Users'));
-
+        
         return $rules;
     }
 }

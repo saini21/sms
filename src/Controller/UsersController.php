@@ -38,7 +38,7 @@ class UsersController extends AppController {
         
         $this->loadModel('PaymentProofs');
         $paymentProofs = $this->PaymentProofs->find('all')->where(['PaymentProofs.status' => 1]);
-
+        
         $paytmNumber = $this->getOption('payment_receiver_mobile_number');
         $this->set('paytmNumber', $paytmNumber);
         
@@ -54,22 +54,40 @@ class UsersController extends AppController {
         $pendingActivities = $this->SentMessages->find('all')->where(['SentMessages.user_id' => $this->Auth->user('id'), 'SentMessages.approved' => 0])->count();
         
         $totalEarning = 0;
-        
-        if (!$this->Auth->user('has_plan')) {
-            
-            $this->loadModel('SubscriptionPackages');
-            $subscriptionPackages = $this->SubscriptionPackages->find('all')->where(['SubscriptionPackages.status' => 1]);
-            $this->set('subscriptionPackages', $subscriptionPackages);
-                        
-            $this->loadModel('Subscriptions');
-            $subscription = $this->Subscriptions->find('all')->select(['order_number' => 'MAX(Subscriptions.id)'])->first();
-            $this->set('orderNumber', $subscription->order_number + 1);
-        }
-
+    
         $paytmNumber = $this->getOption('payment_receiver_mobile_number');
         $this->set('paytmNumber', $paytmNumber);
         
-       $this->set(compact('totalActivities', 'processedActivities', 'pendingActivities', 'totalEarning'));
+        if (!$this->Auth->user('has_plan')) {
+            
+            if ($this->Auth->user('payment_made')) {
+                $this->render('dashboard_payment_made');
+            } else {
+                
+                $this->loadModel('SubscriptionPackages');
+                $subscriptionPackages = $this->SubscriptionPackages->find('all')->where(['SubscriptionPackages.status' => 1]);
+                $this->set('subscriptionPackages', $subscriptionPackages);
+                
+                $this->loadModel('Subscriptions');
+                $subscription = $this->Subscriptions->find('all')->select(['order_number' => 'MAX(Subscriptions.id)'])->first();
+                $this->set('orderNumber', $subscription->order_number + 1);
+    
+                $this->render('dashboard_packages');
+            }
+            
+        } else {
+            $earningStats = $this->earningStats($this->Auth->user('id'));
+            $total = end($earningStats);
+            
+            $totalEarning = $total['money'];
+            
+            $this->set('totalEarning', $totalEarning);
+        }
+        
+        
+        
+        
+        $this->set(compact('totalActivities', 'processedActivities', 'pendingActivities'));
     }
     
     

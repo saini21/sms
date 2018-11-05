@@ -1,74 +1,11 @@
 <?php $this->assign('title', __('Dashboard')) ?>
+<style>
+    .box-shadow {
+        box-shadow: #f889a8 0px 0px 10px 4px;
+    }
+</style>
 <div class="g-bg-lightblue-v10-opacity-0_5 g-pa-20">
     
-    <?php if (isset($subscriptionPackages)) { ?>
-        <!-- Promo Block -->
-        <section
-            class="dzsparallaxer auto-init height-is-based-on-content use-loading mode-scroll loaded dzsprx-readyall "
-            data-options='{direction: "fromtop", animation_duration: 25, direction: "reverse"}'>
-            <!-- Parallax Image -->
-            <div
-                class="divimage dzsparallaxer--target w-100 g-bg-cover g-bg-size-cover g-bg-pos-top-center g-bg-primary-gradient-opacity-v1--after"
-                style="height: 70%; background-image: url(images/pricing-plan.jpg);"></div>
-            <!-- End Parallax Image -->
-            
-            <!-- Promo Block Content -->
-            <div class="container g-color-white text-center g-pos-rel g-z-index-1 g-pt-50 g-pb-100">
-                <h3 class="h2 g-font-weight-300 mb-0" style="color: #000000">Finding your perfect plan.</h3>
-                <h2 class="g-font-weight-700 g-font-size-65 text-uppercase" style="color: #000000">Pricing plan</h2>
-                <h4 class="g-font-weight-300  text-uppercase" style="color: #000000">Purchase Package of your choice to
-                    enjoy the services.</h4>
-            </div>
-            <!-- Promo Block Content -->
-        </section>
-        <div class="row">
-            <?php foreach ($subscriptionPackages as $subscriptionPackage) { ?>
-                <div class="col-md-4 g-mb-30">
-                    <!-- Article -->
-                    <article
-                        class="u-shadow-v21 u-shadow-v21--hover g-bg-white text-center g-overflow-hidden g-rounded-4 g-pos-rel g-z-index-2 g-cursor-pointer g-transition-0_3">
-                        <!-- Article Header -->
-                        <header class="g-bg-primary g-pos-rel g-px-20 g-py-70"><strong
-                                class="d-block g-color-white g-font-size-50 g-line-height-0_7 g-mb-20"> <span
-                                    class="g-valign-top g-font-size-default">INR</span><?= $subscriptionPackage->price ?>
-                                <span
-                                    class="g-font-size-default"></span> </strong>
-                            <h3 class="h6 text-uppercase g-color-white-opacity-0_7 g-letter-spacing-3 g-mb-20"><?= $subscriptionPackage->name ?></h3>
-                        </header>
-                        <!-- End Article Header -->
-                        
-                        <!-- Article Content -->
-                        <div class="g-px-20 g-py-40">
-                            <ul class="list-unstyled g-mb-40">
-                                <li class="g-mb-20">Package <?= $subscriptionPackage->price ?></li>
-                                <li class="g-mb-20">Earn <?= $subscriptionPackage->earn_per_sms ?> paisa / Sms</li>
-                                <li class="g-mb-20">Cost <?= $subscriptionPackage->price ?> INR</li>
-                                <li class="g-mb-20">Pay By Paytm <?= $paytmNumber ?></li>
-                            </ul>
-                            <form
-                                action="<?= $this->Url->build(['controller' => 'Subscriptions', 'action' => 'paytm']); ?>"
-                                method="post">
-                                <input type="hidden" name="ORDER_ID"
-                                       value="<?= "EWS_" . $subscriptionPackage->id . "_" . $orderNumber ."_".rand(10000,99999) ?>">
-                                <input type="hidden" name="CUST_ID" value="CUST_<?= $authUser['id'] ?>">
-                                <input type="hidden" name="INDUSTRY_TYPE_ID" value="Retail">
-                                <input type="hidden" name="CUST_ID" value="CUST001">
-                                <input type="hidden" name="CHANNEL_ID" value="WEB">
-                                <input type="hidden" name="TXN_AMOUNT" value="<?= (int)$subscriptionPackage->price ?>">
-                                <button
-                                    class="btn text-uppercase u-btn-primary g-rounded-50 g-font-size-12 g-font-weight-700 g-pa-15-30 g-mb-10">
-                                    Purchase
-                                </button>
-                            </form>
-                        
-                        </div>
-                        <!-- End Article Content -->
-                    </article>
-                    <!-- End Article -->
-                </div>
-            <?php } ?>
-        </div>
-    <?php } else { ?>
         <div class="row">
             <div class="col-sm-6 col-lg-6 col-xl-3 g-mb-30">
                 <!-- Panel -->
@@ -166,7 +103,7 @@
                             <div class="media-body align-self-center">
                                 <div class="d-flex align-items-center g-mb-5">
                                 <span
-                                    class="g-font-size-24 g-line-height-1 g-color-black">INR <?= $totalEarning ?></span>
+                                    class="g-font-size-24 g-line-height-1 g-color-black"><?= $totalEarning ?></span>
                                 </div>
                                 
                                 <h6 class="g-font-size-16 g-font-weight-300 g-color-gray-dark-v6 mb-0">Total
@@ -178,7 +115,26 @@
                 <!-- End Panel -->
             </div>
         </div>
-    <?php } ?>
+        <h3 class="g-font-weight-300 g-font-size-28 g-color-black g-mb-30">
+            <?= __('Earning Stats') ?> - <?= $authUser['first_name'] . " " . $authUser['last_name'] ?>
+        </h3>
+        
+        <div class="faqs table-responsive g-mb-40">
+            <table cellpadding="0" cellspacing="0" class="table table-bordered table-hover u-table--v4 g-color-black">
+                <tr>
+                    <th scope="col" class="text-center">Activity Type</th>
+                    <th scope="col" class="text-center">Activity Count</th>
+                    <th scope="col" class="text-center">Activity Earning/Penalty</th>
+                </tr>
+                <?php foreach ($activityStats as $activityStat) { ?>
+                    <tr>
+                        <td scope="col" class="text-center"><?= $activityStat['type'] ?></td>
+                        <td scope="col" class="text-center"><?= $activityStat['count'] ?></td>
+                        <td scope="col" class="text-center"><?= $activityStat['money'] ?></td>
+                    </tr>
+                <?php } ?>
+            </table>
+        </div>
     
     <!-- Statistic Card -->
     <div class="row">

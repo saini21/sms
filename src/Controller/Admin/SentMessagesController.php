@@ -12,10 +12,10 @@ use App\Controller\Admin\AppController;
  * @method \App\Model\Entity\SentMessage[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class SentMessagesController extends AppController {
-
-
+    
+    
     public function approveMessage() {
-
+        
         $this->autoRender = false;
         $this->responseCode = CODE_BAD_REQUEST;
         if ($this->request->is('post')) {
@@ -26,46 +26,62 @@ class SentMessagesController extends AppController {
                 $this->responseData['new_approved'] = $sentMessage->approved;
             }
         }
-
+        
         echo $this->responseFormat();
     }
-
-    public function findDuplicates($userId = 1){
-
+    
+    public function approveMessages() {
+        
+        $this->autoRender = false;
+        $this->responseCode = CODE_BAD_REQUEST;
+        if ($this->request->is('post')) {
+            $query = $this->SentMessages->query();
+            $query->update()
+                ->set(['approved' => $this->request->data['approved']])
+                ->where(['id IN' => $this->request->data['ids']])
+                ->execute();
+            $this->responseCode = SUCCESS_CODE;
+        }
+        $this->Flash->success(__('Approvement status has been updated'));
+        echo $this->responseFormat();
+    }
+    
+    public function findDuplicates($userId = 1) {
+        
         $sentMessages = $this->SentMessages->find('all')
             ->select([
-            'count'=>'count(*)',
-            'message',
-            'mobile',
-            'sms'=>'CONCAT(message, " ", mobile)',
+                'count' => 'count(*)',
+                'message',
+                'mobile',
+                'sms' => 'CONCAT(message, " ", mobile)',
                 'id'
-        ])
-            ->where(['SentMessages.user_id'=>$userId, 'SentMessages.is_duplicate'=>false])
+            ])
+            ->where(['SentMessages.user_id' => $userId, 'SentMessages.is_duplicate' => false])
             ->group(['sms'])
             ->having(['count > 1']);
-
+        
         $duplicateMessageCount = 0;
-        if(!empty($sentMessages)) {
+        if (!empty($sentMessages)) {
             foreach ($sentMessages as $sm) {
-
+                
                 $query = $this->SentMessages->query();
-                $query->update()->set(['is_duplicate' => true])->where(['SentMessages.user_id' => $userId, 'SentMessages.message' => $sm->message, 'SentMessages.mobile' => $sm->mobile, 'SentMessages.user_id' => $userId,
-
-                    ])->execute();
-
+                $query->update()->set(['is_duplicate' => true, 'approved' => 2])->where(['SentMessages.user_id' => $userId, 'SentMessages.message' => $sm->message, 'SentMessages.mobile' => $sm->mobile, 'SentMessages.user_id' => $userId,
+                
+                ])->execute();
+                
                 $duplicateMessageCount++;
             }
         }
-        if($duplicateMessageCount<= 0 ) {
+        if ($duplicateMessageCount <= 0) {
             $this->Flash->warning(__('No duplicate message sent found'));
         } else {
             $this->Flash->success(__($duplicateMessageCount . ' duplicate message found'));
         }
-
-        $this->redirect(['controller'=>'Users', 'action'=>'activities', $userId]);
+        
+        $this->redirect(['controller' => 'Users', 'action' => 'activities', $userId]);
     }
-
-
+    
+    
     /**
      * Index method
      *
@@ -76,10 +92,10 @@ class SentMessagesController extends AppController {
             'contain' => ['Users']
         ];
         $sentMessages = $this->paginate($this->SentMessages);
-
+        
         $this->set(compact('sentMessages'));
     }
-
+    
     /**
      * View method
      *
@@ -91,10 +107,10 @@ class SentMessagesController extends AppController {
         $sentMessage = $this->SentMessages->get($id, [
             'contain' => ['Users']
         ]);
-
+        
         $this->set('sentMessage', $sentMessage);
     }
-
+    
     /**
      * Add method
      *
@@ -106,7 +122,7 @@ class SentMessagesController extends AppController {
             $sentMessage = $this->SentMessages->patchEntity($sentMessage, $this->request->getData());
             if ($this->SentMessages->save($sentMessage)) {
                 $this->Flash->success(__('The sent message has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The sent message could not be saved. Please, try again.'));
@@ -114,7 +130,7 @@ class SentMessagesController extends AppController {
         $users = $this->SentMessages->Users->find('list', ['limit' => 200]);
         $this->set(compact('sentMessage', 'users'));
     }
-
+    
     /**
      * Edit method
      *
@@ -130,7 +146,7 @@ class SentMessagesController extends AppController {
             $sentMessage = $this->SentMessages->patchEntity($sentMessage, $this->request->getData());
             if ($this->SentMessages->save($sentMessage)) {
                 $this->Flash->success(__('The sent message has been saved.'));
-
+                
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The sent message could not be saved. Please, try again.'));
@@ -138,7 +154,7 @@ class SentMessagesController extends AppController {
         $users = $this->SentMessages->Users->find('list', ['limit' => 200]);
         $this->set(compact('sentMessage', 'users'));
     }
-
+    
     /**
      * Delete method
      *
@@ -154,7 +170,7 @@ class SentMessagesController extends AppController {
         } else {
             $this->Flash->error(__('The sent message could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
 }
