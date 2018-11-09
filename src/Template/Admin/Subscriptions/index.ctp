@@ -12,8 +12,8 @@
     <table cellpadding="0" cellspacing="0" class="table table-bordered table-hover u-table--v3 g-color-black">
         <thead>
         <tr>
-            <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
+            <th scope="col">&nbsp;</th>
+            <th scope="col">Subscriber</th>
             <th scope="col"><?= $this->Paginator->sort('subscription_package_id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('status') ?></th>
             <th scope="col"><?= $this->Paginator->sort('created') ?></th>
@@ -23,8 +23,8 @@
         <tbody>
         <?php foreach ($subscriptions as $subscription): ?>
             <tr>
-                <td><?= $this->Number->format($subscription->id) ?></td>
-                <td><?= $subscription->has('user') ? $this->Html->link($subscription->user->id, ['controller' => 'Users', 'action' => 'view', $subscription->user->id]) : '' ?></td>
+                <td><img src="<?= PROFILE_IMAGE_PATH . $subscription->user->profile_image ?>" alt="<?= $subscription->user->first_name ?>" width="120" /></td>
+                <td><?= h($subscription->user->first_name) ?> <?= h($subscription->user->last_name) ?></td>
                 <td><?= $subscription->has('subscription_package') ? $this->Html->link($subscription->subscription_package->name, ['controller' => 'SubscriptionPackages', 'action' => 'view', $subscription->subscription_package->id]) : '' ?></td>
                 <td>
                     <?= $this->element('Admin/status', [

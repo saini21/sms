@@ -22,15 +22,15 @@
         </div>
     
         <div class="form-group g-mb-30">
-            <label class="g-mb-10"><?= __('Price') ?></label>
+            <label class="g-mb-10"><?= __('Price (Rs.)') ?></label>
             <div class="g-pos-rel">
                 <?= $this->Form->control('price', ['type'=>'number', 'label' => false, "class" => "form-control g-brd-gray-light-v3--focus g-py-10"]); ?>
             </div>
         </div>
         <div class="form-group g-mb-30">
-            <label class="g-mb-10"><?= __('Earn per SMS') ?></label>
+            <label class="g-mb-10"><?= __('Earn per SMS (Paisa)') ?></label>
             <div class="g-pos-rel">
-                <?= $this->Form->control('earn_per_sms', ['label' => false, "class" => "form-control g-brd-gray-light-v3--focus g-py-10"]); ?>
+                <?= $this->Form->control('earn_per_sms', ['type'=>'number','label' => false, "class" => "form-control g-brd-gray-light-v3--focus g-py-10"]); ?>
             </div>
         </div>
       

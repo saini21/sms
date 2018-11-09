@@ -14,8 +14,8 @@
         <tr>
             <th scope="col"><?= $this->Paginator->sort('id') ?></th>
             <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('price') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('earn_per_sms') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('price') ?> (Rs.)</th>
+            <th scope="col"><?= $this->Paginator->sort('earn_per_sms') ?> (Paisa)</th>
             <th scope="col"><?= $this->Paginator->sort('status') ?></th>
             <th scope="col"><?= $this->Paginator->sort('created') ?></th>
             <th scope="col" class="actions"><?= __('Actions') ?></th>
